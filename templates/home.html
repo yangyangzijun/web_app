@@ -1,81 +1,101 @@
 {% extends 'base.html' %}
-{% load staticfiles %}
 
-{% block title %}
-    我的网站|首页
-{% endblock %}
 
-{% block header_extends %}
-    <link rel="stylesheet" href="{% static 'home.css' %}">
-    <script src="http://cdn.hcharts.cn/highcharts/highcharts.js"></script>
-{% endblock %}
+{% block footer %}
+<html>
+<body>
+<div id="user_mess">
+    <a class="btn btn-primary " href="/regrist" role="button" style="position: absolute;right: 55px;top: 5px;">注册</a>
+    <a class="btn btn-primary" href="/login" role="button" style="position: absolute;right: 155px;top: 5px;">登录</a>
+</div>
+<div class="container">
 
-{% block nav_home_active %}active{% endblock %}
 
-{% block content %}
-    <h3 class="home-content">欢迎访问我的网站，随便看</h3>
-    <!-- 图表容器 DOM -->
-    <div id="container"></div>
-    <div class="hot-data">
-        <h3>今天热门博客</h3>
-        <ul>
-            {% for hot_data in today_hot_data %}
-                <li><a href="{% url 'blog_detail' hot_data.content_object.pk %}">{{ hot_data.content_object.title }}</a>({{ hot_data.read_num }})</li>            
-            {% empty %}
-                <li>今天暂时没有热门博客</li>
-            {% endfor %}
-        </ul>
+    <div class="row">
+        <div style="width: 292.5px; margin-right: 10px;" class="col-md-2">
+
+            <h4>第一列</h4>
+            <img src="https://shopstatic.vivo.com.cn/vivoshop/commodity/82/1882_1534852360612hd_bi_750x750.png" style="width: 172px;
+    height: 172px;
+    margin-top: 41px;">
+            <p>
+                price  100
+            </p>
+
+        </div>
+        <div style="width: 292.5px; margin-right: 10px;" class="col-md-2">
+
+            <h4>第一列</h4>
+            <img src="https://shopstatic.vivo.com.cn/vivoshop/commodity/82/1882_1534852360612hd_bi_750x750.png" style="width: 172px;
+    height: 172px;
+    margin-top: 41px;">
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+            </p>
+
+        </div>
+
+        <div class="col-md-9" style="background-color: #dedef8;box-shadow: inset 1px -1px 1px #444, inset -1px 1px 1px #444;">
+            <h4>第二列 - 分为四个盒子</h4>
+            <div class="row">
+                <div class="col-md-6" style="background-color: #B18904; box-shadow: inset 1px -1px 1px #444, inset -1px 1px 1px #444;">
+                    <p>
+                        Consectetur art party Tonx culpa semiotics. Pinterest
+        assumenda minim organic quis.
+                    </p>
+                </div>
+                <div class="col-md-6" style="background-color: #B18904; box-shadow: inset 1px -1px 1px #444, inset -1px 1px 1px #444;">
+                    <p>
+                         s
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6" style="background-color: #B18904; box-shadow: inset 1px -1px 1px #444, inset -1px 1px 1px #444;">
+                    <p>
+                        quis nostrud exercitation ullamco laboris nisi ut
+        aliquip ex ea commodo consequat.
+                    </p>
+                </div>
+                <div class="col-md-6" style="background-color: #B18904; box-shadow: inset 1px -1px 1px #444, inset -1px 1px 1px #444;">
+                    <p>
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+        sed do eiusmod tempor incididunt ut labore et dolore magna
+        aliqua. Ut enim ad minim.
+                    </p>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="hot-data">
-        <h3>昨天热门博客</h3>
-        <ul>
-            {% for hot_data in yesterday_hot_data %}
-                <li><a href="{% url 'blog_detail' hot_data.content_object.pk %}">{{ hot_data.content_object.title }}</a>({{ hot_data.read_num }})</li>            
-            {% empty %}
-                <li>昨天暂时没有热门博客</li>
-            {% endfor %}
-        </ul>
-    </div>
-    <div class="hot-data">
-        <h3>7天热门博客</h3>
-        <ul>
-            {% for hot_blog in hot_blogs_for_7_days %}
-                <li><a href="{% url 'blog_detail' hot_blog.id %}">{{ hot_blog.title }}</a>({{ hot_blog.read_num_sum }})</li>            
-            {% empty %}
-                <li>昨天暂时没有热门博客</li>
-            {% endfor %}
-        </ul>
-    </div>
+</div>
+</body>
+</html>
     <script>
-        // 图表配置
-        var options = {
-            chart: { type: 'line' },
-            title: { text: null },
-            xAxis: {
-                categories: {{ dates|safe }},   // x 轴分类
-                tickmarkPlacement: 'on',
-                title: { text: '前7日阅读量变化'},
-            },
-            yAxis: {
-                title: { text: null },
-                labels:{ enabled: false },
-                gridLineDashStyle: 'Dash',
-            },
-            series: [{                              // 数据列
-                name: '阅读量',                     // 数据列名
-                data: {{ read_nums }}               // 数据
-            }],
-            plotOptions: {
-                line: {
-                    dataLabels: {
-                        enabled: true
-                    }
+
+        $.ajax({
+            url: "/check_login",
+            type: "get",
+            contentType: "application/json; charset=utf-8",
+
+            dataType: "json",
+            success: function (data) { //后端返回的json数据（此处data为json对象）
+                if (data.mess == 'ok') {
+                    var m = '<a class="btn btn-primary" href="/login" role="button" style="position: absolute;right: 155px;top: 5px;"> 欢迎' +
+                        data.username +'</a>'+'<a class="btn btn-primary" href="/logout" role="button" style="position: absolute;right: 90px;top: 5px;">注销</a>';
+
+                     document.getElementById("user_mess").innerHTML = m;
                 }
+                else {
+
+                }
+
             },
-            legend: { enabled: false },
-            credits: { enabled: false },
-        };
-        // 图表初始化函数
-        var chart = Highcharts.chart('container', options);
+            error: function (e) {
+                alert("错误！！");
+            }
+        });
+
     </script>
+
 {% endblock %}
+

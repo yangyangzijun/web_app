@@ -7,15 +7,21 @@ db = pymysql.connect(
     db='web_db',
     charset='utf8'
 )
-username = 'ddd'
+username = '11111'
 password = 'dd'
 sex= 's'
 cursor = db.cursor()
-cursor.execute(f"select password from user where username ='{username}'")
+cursor = db.cursor()
+
+cursor.execute(f"insert into goods values (NULL,'sjj','10','100','ol')")
+db.commit()
+cursor.close()
 db.commit()
 cursor.close()
 cursor.close()
 data = cursor.fetchall()
 print(data)
+
+print(int('5')+6)
 
 

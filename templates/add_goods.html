@@ -5,28 +5,36 @@
 <html>
 <body>
 
-<form id="regist_form">
+<form id="login_form">
     <div class="containter">
         <div class="row">
             <div class="col-xs-4 col-xs-offset-4">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-title">注册</h3>
+                        <h3 class="panel-title">登录</h3>
                     </div>
 
     <div class="form-group">
-      <label for="disabledTextInput">用户名</label>
-      <input type="text" id="disabledTextInput" class="form-control" name="username" >
+      <label for="disabledTextInput">商品名称</label>
+      <input type="text" id="disabledTextInput" class="form-control" name="goods_name" >
     </div>
    <div class="form-group">
-      <label for="disabledTextInput">密码</label>
-      <input type='password' id="disabledTextInput" class="form-control" name="passwd" >
-        <label for="disabledTextInput">性别</label>
-      <input type="text" id="disabledTextInput" class="form-control" name="sex" >
-       <button type="button"  id="saveUserInfo" class="btn btn-primary pull-right">注册</button>
+      <label for="disabledTextInput">商品数量</label>
+      <input type="password" id="disabledTextInput" class="form-control" name="goods_nums" >
+
 
 
     </div>
+                    <div class="form-group">
+      <label for="disabledTextInput">价格</label>
+      <input type="text" id="disabledTextInput" class="form-control" name="goods_price" >
+    </div>
+                     <div class="form-group">
+      <label for="disabledTextInput">类型</label>
+      <input type="text" id="disabledTextInput" class="form-control" name="goods_type" >
+    </div>
+                     <button type="button"  id="saveUserInfo" class="btn btn-primary pull-right">登录</button>
+
 <br>
                     <br>
     <div>
@@ -52,25 +60,20 @@
    $("#saveUserInfo").click(function(){
 
         var formObject = {};
-        var formArray =$("#regist_form").serializeArray();
+        var formArray =$("#login_form").serializeArray();
         $.each(formArray,function(i,item){
             formObject[item.name] = item.value;
         });
         $.ajax({
-            url:"/regrist",
+            url:"/add_goods",
             type:"post",
             contentType: "application/json; charset=utf-8",
             data: JSON.stringify(formObject),
             dataType: "json",
              success:function(data){ //后端返回的json数据（此处data为json对象）
-                if(data.mess=='ok')
-                {
-                    window.location.href="/";
-                }
-              else
-                {
-                    alert(data.mess)
-                }
+
+                    alert(data.mess);
+
 
           },
             error:function(e){

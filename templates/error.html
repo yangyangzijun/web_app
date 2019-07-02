@@ -1,12 +1,166 @@
-{% extends 'base.html' %}
-{% load staticfiles %}
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js">
+</script>
+    <body><p>j7k</p></body>
 
-{% block title %}
-    我的网站|错误
-{% endblock %}
+</head>
 
-{% block nav_home_active %}active{% endblock %}
+<body>
 
-{% block content %}
-    {{ message }}，<a href="{{ redirect_to }}">返回</a>
-{% endblock %}
+<h2>AJAX</h2>
+<button type="button" >cdv</button>
+<p>j7k</p>
+
+<div>
+    <pre id = "show">
+
+    </pre>
+</div>
+<div id="test">
+            <!--假数据-->
+            <!--<div class="inner">
+                <img src="img/1.png"/>
+                <h3>名称：小米手机</h3>
+                <span>价格：1000</span>
+            </div>-->
+        </div>
+
+    <li data-id="8">
+                    <a class="category-name" href="/product/list-8">充电
+                        <span class="arrow"></span>
+                    </a>
+                    <div class="category-box">
+                        <div class="category-detail">
+                            <a class="category-all" href="/product/list-8">全部充电&nbsp;<span class="arrow"></span></a>
+                            <p>充电</p>
+                                <ul class="category-product">
+                                            <li data-id="10001130">
+                                                    <i class="icon-tag  hot"></i>
+                                                <a href="https://shop.vivo.com.cn/product/10001130?skuId=101409">
+                                                    <img data-src="https://shopstatic.vivo.com.cn/vivoshop/commodity/30/10001130_1560166546355_250x250.jpg">
+                                                    <span>vivo原装超快闪充数据线</span>
+                                                </a>
+                                            </li>
+                                            <li data-id="10000654">
+                                                    <i class="icon-tag  recomm"></i>
+                                                <a href="https://shop.vivo.com.cn/product/10000654?skuId=100844">
+                                                    <img data-src="https://shopstatic.vivo.com.cn/vivoshop/commodity/54/10000654_1554199690028_250x250.jpg">
+                                                    <span>vivo X27（8G+128G版）原装Type-C数据线</span>
+                                                </a>
+                                            </li>
+                                            <li data-id="10000538">
+                                                <a href="https://shop.vivo.com.cn/product/10000538?skuId=100683">
+                                                    <img data-src="https://shopstatic.vivo.com.cn/vivoshop/commodity/38/10000538_1552359498103_250x250.jpg">
+                                                    <span>iQOO原装44W超快闪充充电器</span>
+                                                </a>
+                                            </li>
+                                            <li data-id="10000535">
+                                                <a href="https://shop.vivo.com.cn/product/10000535?skuId=100824">
+                                                    <img data-src="https://shopstatic.vivo.com.cn/vivoshop/commodity/35/10000535_1551939313207_250x250.jpg">
+                                                    <span>vivo X23/Z3原装闪充数据线</span>
+                                                </a>
+                                            </li>
+                                            <li data-id="10425">
+                                                <a href="https://shop.vivo.com.cn/product/10425?skuId=5157">
+                                                    <img data-src="https://shopstatic.vivo.com.cn/vivoshop/commodity/25/10425_1534842381523_250x250.png">
+                                                    <span>vivo原装Type-C数据线-2.25A</span>
+                                                </a>
+                                            </li>
+                                            <li data-id="10424">
+                                                <a href="https://shop.vivo.com.cn/product/10424?skuId=5156">
+                                                    <img data-src="https://shopstatic.vivo.com.cn/vivoshop/commodity/24/10424_1534841769313_250x250.png">
+                                                    <span>vivo原装10V/2.25A闪充充电器</span>
+                                                </a>
+                                            </li>
+                                            <li data-id="10069">
+                                                <a href="https://shop.vivo.com.cn/product/10069?skuId=4459">
+                                                    <img data-src="https://shopstatic.vivo.com.cn/vivoshop/commodity/69/10069_1534839319343_250x250.png">
+                                                    <span>vivo原装闪充数据线</span>
+                                                </a>
+                                            </li>
+                                            <li data-id="249">
+                                                <a href="https://shop.vivo.com.cn/product/249?skuId=4020">
+                                                    <img data-src="https://shopstatic.vivo.com.cn/vivoshop/commodity/49/249_1534842794682_250x250.png">
+                                                    <span>vivo原装9V/2A双引擎闪充</span>
+                                                </a>
+                                            </li>
+                                            <li data-id="91">
+                                                <a href="https://shop.vivo.com.cn/product/91?skuId=1883">
+                                                    <img data-src="https://shopstatic.vivo.com.cn/vivoshop/commodity/83/1883_1447903056851_250x250.png">
+                                                    <span>vivo原装旅行充电器5V/1.6A</span>
+                                                </a>
+                                            </li>
+                                            <li data-id="9989">
+                                                <a href="https://shop.vivo.com.cn/product/9989?skuId=4273">
+                                                    <img data-src="https://shopstatic.vivo.com.cn/vivoshop/commodity/89/9989_1534842693670_250x250.png">
+                                                    <span>vivo原装低压闪充数据线</span>
+                                                </a>
+                                            </li>
+                                            <li data-id="10000539">
+                                                <a href="https://shop.vivo.com.cn/product/10000539?skuId=100756">
+                                                    <img data-src="https://shopstatic.vivo.com.cn/vivoshop/commodity/39/10000539_1552360104721_250x250.jpg">
+                                                    <span>iQOO原装闪电胶囊数据线</span>
+                                                </a>
+                                            </li>
+                                            <li data-id="10000444">
+                                                <a href="https://shop.vivo.com.cn/product/10000444?skuId=100566">
+                                                    <img data-src="https://shopstatic.vivo.com.cn/vivoshop/commodity/44/10000444_1550287124902_250x250.jpg">
+                                                    <span>乔威 移动电源JP90ST</span>
+                                                </a>
+                                            </li>
+                                            <li data-id="10208">
+                                                <a href="https://shop.vivo.com.cn/product/10208?skuId=4766">
+                                                    <img data-src="https://shopstatic.vivo.com.cn/vivoshop/commodity/08/10208_1534841376477_250x250.png">
+                                                    <span>飞毛腿 V10 移动电源</span>
+                                                </a>
+                                            </li>
+                                            <li data-id="9988">
+                                                <a href="https://shop.vivo.com.cn/product/9988?skuId=4238">
+                                                    <img data-src="https://shopstatic.vivo.com.cn/vivoshop/commodity/88/9988_1534842258247_250x250.png">
+                                                    <span>vivo原装低压闪充充电器</span>
+                                                </a>
+                                            </li>
+                                            <li data-id="111">
+                                                <a href="https://shop.vivo.com.cn/product/111?skuId=100217">
+                                                    <img data-src="https://shopstatic.vivo.com.cn/vivoshop/commodity/11/111_1534839266764_250x250.png">
+                                                    <span>vivo原装Micro USB数据线</span>
+                                                </a>
+                                            </li>
+                                    <li></li>
+                                    <li></li>
+                                    <li></li>
+                                </ul>
+                        </div>
+                    </div>
+                </li>
+<script>
+
+        $.ajax({
+        url:'http://127.0.0.1:5000/js_test',
+        type:'get',
+
+        dataType:'jsonp',
+            jsonp: "callback",
+            jsonpCallback: "successCallback",//回调方法
+            success: function (data) {
+            for(i=0;i<data['data'].length;i++)
+       {
+           var a='<div>姓名:' + data['data'][i][0] + '     密码：' + data['data'][i][1]+ '</div>';
+                document.getElementById("test").innerHTML += a;
+       }
+
+            }
+        ,
+
+        error:function(error,Msgerror){
+
+        }
+    })
+
+ </script>
+</body>
+
+</html>
