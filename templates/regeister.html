@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js">
+</script>
+<body>
+
+
+<form action={{ url_for('regeist') }} method="post">
+            <div>
+                <label for="email">用户名：</label><input type="text" id="username" name="username" />
+            </div>
+            <div>
+                <label for="password">密码：</label><input type="password" id="password" name="password" />
+            </div>
+            <div>
+
+
+                <button type="submit">注册</button>
+            </div>
+        </form>
+</body>
+<script>
+    $.ajax({
+        url:'http://127.0.0.1:5000/login',
+        type:'get',
+
+        dataType:'jsonp',
+        success:function(info){
+           console.log(info)
+        },
+        error:function(error,Msgerror){
+           console.log(Msgerror)
+        }
+    })
+ </script>
+</html>
