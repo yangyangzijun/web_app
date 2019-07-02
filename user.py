@@ -56,17 +56,24 @@ class Goods:
         self.price=int(price)
     def add_sql(self):
         try:
-            
-        
             cursor = db.cursor()
-           
-            cursor.execute(f"insert into goods values (NULL,'{self.goods_name}',{self.goods_nums},{self.price},'{self.type}')")
+            cursor.execute(f"insert into goods values (NULL,'{self.goods_name}',{self.goods_nums},{self.price},'{self.type}',null)")
             db.commit()
             cursor.close()
             return 1
         except:
             return 0
-        
+
+    def del_sql(self):
+        try:
+            cursor = db.cursor()
+            cursor.execute(f"delete from goods where goods_name='{self.goods_name}'")
+            db.commit()
+            cursor.close()
+            return 1
+        except:
+            return 0
+            
         
     
             

@@ -11,17 +11,16 @@ username = '11111'
 password = 'dd'
 sex= 's'
 cursor = db.cursor()
-cursor = db.cursor()
 
-cursor.execute(f"insert into goods values (NULL,'sjj','10','100','ol')")
+cursor.execute(f"delete from goods where goods_name='sjj'")
 db.commit()
 cursor.close()
 db.commit()
 cursor.close()
 cursor.close()
 data = cursor.fetchall()
-print(data)
 
-print(int('5')+6)
+
+print('6'.)
 
 

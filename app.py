@@ -23,8 +23,41 @@ from flask_cors import *
 
 
 app = Flask(__name__)
+UPLOAD_FOLDER = 'static'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+basedir = os.path.abspath(os.path.dirname(__file__))
+ALLOWED_EXTENSIONS = set(['txt', 'png', 'jpg', 'xls', 'JPG', 'PNG', 'xlsx', 'gif', 'GIF'])
+
+
+# 用于判断文件后缀
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 CORS(app, supports_credentials=True)
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
+
+
+@app.route('/add_goods_photo',methods=['GET','POST'])
+def add_goods_photo():
+    file_dir = os.path.join(basedir, app.config['UPLOAD_FOLDER'])
+    if not os.path.exists(file_dir):
+        os.makedirs(file_dir)
+    f = request.files['myfile']  # 从表单的file字段获取文件，myfile为该表单的name值
+    print(request.form['goods_name'])
+    if f and allowed_file(f.filename):  # 判断是否是允许上传的文件类型
+        fname = secure_filename(f.filename)
+        ext = fname.rsplit('.', 1)[1]  # 获取文件后缀
+        unix_time = int(time.time())
+        new_filename = str(unix_time) + '.' + ext  # 修改了上传的文件名
+        f.save(os.path.join(file_dir, new_filename))  # 保存文件到upload目录
+        token = (new_filename)
+        
+        
+        return jsonify({"errno": 0, "errmsg": "上传成功", "token": token})
+    else:
+        return jsonify({"errno": 1001, "errmsg": "上传失败"})
+
+
+
 
 @app.route('/add_goods',methods=['GET','POST'])
 def add_goods():
@@ -38,6 +71,18 @@ def add_goods():
         goods_type = request_data['goods_type']
         goods = Goods(goods_name,goods_nums,goods_price,goods_type)
         if goods.add_sql()==0:
+            return jsonify({'mess': 'error'})
+        else:
+            return jsonify({'mess': 'ok'})
+@app.route('/del_goods',methods=['GET','POST'])
+def del_goods():
+    if request.method=="GET":
+        return  render_template('del_goods.html')
+    if request.method=='POST':
+        request_data = json.loads(request.data.decode('utf-8'))
+        goods_name=request_data['goods_name']
+        goods = Goods(goods_name)
+        if goods.del_sql()==0:
             return jsonify({'mess': 'error'})
         else:
             return jsonify({'mess': 'ok'})

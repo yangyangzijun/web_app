@@ -33,6 +33,15 @@
       <label for="disabledTextInput">类型</label>
       <input type="text" id="disabledTextInput" class="form-control" name="goods_type" >
     </div>
+                    <div class="form-group">
+    <label for="exampleInputFile">File input</label>
+    <input type="file" id="exampleInputFile" name="upload">
+    <p class="help-block">Example block-level help text here.</p>
+
+  </div>
+                    <div class="uploadImgBtn" id="uploadImgBtn">
+        <input class="uploadImg" type="file" name="myfile" id="file1">
+    </div>
                      <button type="button"  id="saveUserInfo" class="btn btn-primary pull-right">登录</button>
 
 <br>
@@ -54,9 +63,53 @@
         </div>
     </div>
 </form>
+<form id="formTag1" enctype="multipart/form-data">
+     <div class="form-group">
+      <label for="disabledTextInput">商品名称</label>
+      <input type="text" id="disabledTextInput" class="form-control" name="goods_name" >
+    </div>
+    <div class="uploadImgBtn" id="uploadImgBtn">
+        <input class="uploadImg" type="file" name="myfile" id="file1">
+    </div>
+</form>
+
     </body>
 </html>
     <script>
+     $(document).ready(function(){
+        $("#formTag1").on("change", upload );
+    })
+
+    function upload(){
+        /**
+         * 我们存一下this对象，
+         * 我们将在ajax的回调函数中，
+         * 将要用这个对象，
+         * 用它来改变父盒子的背景图
+         *
+         */
+        var self = this;
+        //如果不理解我写的，可以看看我的前几篇文章
+        $.ajax({
+            url: "/add_goods_photo",
+            type: "post",
+            dataType: "json",
+            cache: false,
+            data: new FormData($("#formTag1")[0]),
+            processData: false,// 不处理数据
+            contentType: false, // 不设置内容类型
+            success: function(data){
+                /*
+                    后端返回的数据格式为
+                    {"url": "xxxxxx"}
+                 */
+                $(self).parent().css({
+                    "background-image": "url("+data.url+")"
+                })
+            }
+
+        })
+    }
    $("#saveUserInfo").click(function(){
 
         var formObject = {};
@@ -71,10 +124,7 @@
             data: JSON.stringify(formObject),
             dataType: "json",
              success:function(data){ //后端返回的json数据（此处data为json对象）
-
                     alert(data.mess);
-
-
           },
             error:function(e){
                 alert("错误！！");
