@@ -48,16 +48,18 @@ class Goods:
     goods_nums = None
     price = None
     type = None
-    def __init__(self,name = None,nums= 0,price = 99999,type = None):
+    photo = None
+    def __init__(self,name = None,nums= 0,price = 99999,type = None,photo = None):
         self.goods_name=name
         self.id=None
         self.type=type
         self.goods_nums=int(nums)
         self.price=int(price)
+        self.photo = photo
     def add_sql(self):
         try:
             cursor = db.cursor()
-            cursor.execute(f"insert into goods values (NULL,'{self.goods_name}',{self.goods_nums},{self.price},'{self.type}',null)")
+            cursor.execute(f"insert into goods values (NULL,'{self.goods_name}',{self.goods_nums},{self.price},'{self.type}','{ self.photo}')")
             db.commit()
             cursor.close()
             return 1

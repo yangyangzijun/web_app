@@ -12,7 +12,7 @@ password = 'dd'
 sex= 's'
 cursor = db.cursor()
 
-cursor.execute(f"delete from goods where goods_name='sjj'")
+cursor.execute(f"select * from goods")
 db.commit()
 cursor.close()
 db.commit()
@@ -21,6 +21,17 @@ cursor.close()
 data = cursor.fetchall()
 
 
-print('6'.)
+print((data))
+
+
+
+res={}
+li = []
+res[data[0][0]]={'num':data[0][2],'weight':65}
+for l in data:
+    res={'goods_name':l[1],'goods_nums':l[2],'goods_price':l[3],'goods_type':l[4]}
+    li.append(res)
+res['mess']= 'ok'
+print(li)
 
 

@@ -7,17 +7,10 @@ import psutil, time,json
 import pymysql
 import json
 from redis import StrictRedis
-from user import User,Goods
+from user import User,Goods,db
 
 redis = StrictRedis(host='127.0.0.1', port=6379, db=0, password='')
-db = pymysql.connect(
-    host='127.0.0.1',
-    port=3306,
-    user='root',
-    passwd='',
-    db='web_db',
-    charset='utf8'
-)
+
 from flask_cors import *
 
 
@@ -34,7 +27,24 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 CORS(app, supports_credentials=True)
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
-
+@app.route('/list_goods',methods=['GET','POST'])
+def list_goods():
+    cursor = db.cursor()
+    cursor.execute(f"select * from goods")
+    cursor.close()
+    data = cursor.fetchall()
+    
+    res = {}
+    li = []
+    for l in data:
+        res = {'goods_id'   : l[0], 'goods_name': l[1], 'goods_nums': l[2], 'goods_price': l[3], 'goods_type': l[4],
+               'goods_photo': 'static/' + str(l[5])}
+        li.append(res)
+    
+    result = {}
+    result['data']=li
+    result['mess']='ok'
+    return jsonify(result)
 
 @app.route('/add_goods_photo',methods=['GET','POST'])
 def add_goods_photo():
@@ -63,17 +73,40 @@ def add_goods_photo():
 def add_goods():
     if request.method=="GET":
         return  render_template('add_goods.html')
-    if request.method=='POST':
-        request_data = json.loads(request.data.decode('utf-8'))
-        goods_name=request_data['goods_name']
-        goods_nums = request_data['goods_nums']
-        goods_price  = request_data['goods_price']
-        goods_type = request_data['goods_type']
-        goods = Goods(goods_name,goods_nums,goods_price,goods_type)
-        if goods.add_sql()==0:
-            return jsonify({'mess': 'error'})
-        else:
-            return jsonify({'mess': 'ok'})
+    else:
+        file_dir = os.path.join(basedir, app.config['UPLOAD_FOLDER'])
+        if not os.path.exists(file_dir):
+            os.makedirs(file_dir)
+        f = request.files['myfile']  # 从表单的file字段获取文件，myfile为该表单的name值
+        goods_name = request.form['goods_name']
+        goods_nums = int(request.form['goods_nums'])
+        goods_price = int(request.form['goods_price'])
+        goods_type = request.form['goods_type']
+        try:
+            if f and allowed_file(f.filename):  # 判断是否是允许上传的文件类型
+                fname = secure_filename(f.filename)
+                ext = fname.rsplit('.', 1)[1]  # 获取文件后缀
+                unix_time = int(time.time())
+                new_filename = str(unix_time) + '.' + ext  # 修改了上传的文件名
+                f.save(os.path.join(file_dir, new_filename))  # 保存文件到upload目录
+                
+                goods = Goods(goods_name, goods_nums, goods_price, goods_type, new_filename)
+
+                if goods.add_sql() == 0:
+                    return jsonify({'mess': 'error'})
+                else:
+                    return jsonify({'mess': 'ok'})
+        
+                
+            else:
+                return jsonify({"errno": 1001, "errmsg": "上传失败"})
+        except:
+            return jsonify({"errno": 1001, "errmsg": "文件类型错误"})
+            
+
+        
+    
+    
 @app.route('/del_goods',methods=['GET','POST'])
 def del_goods():
     if request.method=="GET":
