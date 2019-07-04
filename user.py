@@ -1,6 +1,6 @@
 import pymysql
 db = pymysql.connect(
-    host='127.0.0.1',
+    host='192.168.43.68',
     port=3306,
     user='root',
     passwd='',
@@ -42,6 +42,24 @@ class User:
             return 1
         except:
             return 0
+
+    def create_order(self, goods_id):
+        try:  # test pswd
+            cursor = db.cursor()
+            cursor.execute(f"select user_id from user where username ='{self.username}' ")
+            data1 = cursor.fetchall()
+          
+            
+            cursor.close()
+            user_id = data1[0][0]
+            
+            o = Order(user_id=user_id, goods_id=goods_id)
+            o.update()
+            return 1
+        except:
+            return -1
+
+
 class Goods:
     id=None
     goods_name = None
@@ -75,6 +93,19 @@ class Goods:
             return 1
         except:
             return 0
+class Order:
+    order_id=None
+    goods_id=None
+    user_id=None
+    def __init__(self,order_id=None,goods_id=None,user_id=None):
+        self.goods_id=goods_id
+        self.order_id=order_id
+        self.user_id=user_id
+    def update(self):
+        cursor = db.cursor()
+        cursor.execute(f"insert into orders (user_id,goods_id) values ('{self.user_id}','{self.goods_id}')")
+        db.commit()
+        cursor.close()
             
         
     

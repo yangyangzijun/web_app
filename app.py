@@ -27,6 +27,24 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 CORS(app, supports_credentials=True)
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
+@app.route('/test',methods=['GET','POST'])
+
+def test():
+    return  render_template('html.html')
+@app.route('/create_order',methods=['GET','POST'])
+
+def create_order():
+    if request.method=="POST":
+        if 'username' in session:
+            print(session['username'])
+            u=User(name=session['username'])
+            request_data = json.loads(request.data.decode('utf-8'))
+            u.create_order(request_data['goods_id'])
+            return 'ok'
+        else:
+            return jsonify({'mess':'请先登录'})
+
+    
 @app.route('/list_goods',methods=['GET','POST'])
 def list_goods():
     cursor = db.cursor()
