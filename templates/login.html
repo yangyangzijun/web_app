@@ -1,54 +1,99 @@
-{% extends 'base.html' %}
 
+<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+<HTML>
+<HEAD>
+    <meta charset="utf-8">
+    <TITLE>kk</TITLE>
+    <style type="text/css">
 
-{% block footer %}
-<html>
-<body>
-
-<form id="login_form">
-    <div class="containter">
-        <div class="row">
-            <div class="col-xs-4 col-xs-offset-4">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">登录</h3>
-                    </div>
-
-    <div class="form-group">
-      <label for="disabledTextInput">用户名</label>
-      <input type="text" id="disabledTextInput" class="form-control" name="username" >
+    </style>
+<link rel="stylesheet" href="static\login.css">
+    <div class="header" id="head">
+        <div class="title">想喝大可乐登陆系统</div>
     </div>
-   <div class="form-group">
-      <label for="disabledTextInput">密码</label>
-      <input type="password" id="disabledTextInput" class="form-control" name="passwd" >
-       <button type="button"  id="saveUserInfo" class="btn btn-primary pull-right">登录</button>
+</HEAD>
+<BODY>
+<form  id="login_form">
+<DIV id="div1">
+    <TABLE id=login height="100%" cellSpacing=0 cellPadding=0 width=800 align=center>
+        <TBODY>
+        <TR id="main">
+            <TD>
+                <TABLE height="100%" cellSpacing=0 cellPadding=0 width="100%">
+                    <TBODY>
+                    <TR>
+                        <TD colSpan=4>&nbsp;</TD>
+                    </TR>
+                    <TR height=30>
+                        <TD width=380>&nbsp;</TD>
+                        <TD>&nbsp;</TD>
+                        <TD>&nbsp;</TD>
+                        <TD>&nbsp;</TD>
+                    </TR>
+                    <TR height=40>
+                        <TD rowSpan=4>&nbsp;</TD>
+                        <TD>用户名：</TD>
+                        <TD><INPUT type="text"  id="txtUserName" name="username"></TD>
+                        <TD width=120>&nbsp;</TD>
+                    </TR>
+                    <TR height=40>
+                        <TD>密　码：</TD>
+                        <TD><INPUT type="password"  id="txtUserPassword"  name="passwd"></TD>
+                        <TD width=120>&nbsp;</TD>
+                    </TR>
 
+                    <TR height=40>
+                        <TD></TD>
+                        <td align="right">
+                            <div><button type="button" id="saveUserInfo">登陆</button></div>
+                        </td>
 
-    </div>
-<br>
-                    <br>
-    <div>
-
-                    </div>
-
-
-
-
-
-
-
-
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+                        <TD width=120>&nbsp;</TD>
+                    </TR>
+                    <TR height=160>
+                        <TD colSpan=4>&nbsp;</TD>
+                    </TR>
+                    </TBODY>
+                </TABLE>
+            </TD>
+        </TR>
+        <TR id=root height=104>
+            <TD>&nbsp;</TD>
+        </TR>
+        </TBODY>
+    </TABLE>
+</DIV>
 </form>
-    </body>
-</html>
-    <script>
-   $("#saveUserInfo").click(function(){
+<DIV id=div2 style="DISPLAY: none"></DIV>
 
+<!--底部-->
+<div class="footer" id="foot">
+    <div class="copyright">
+        <p>Copyright © 2018 Qunar.com Inc. All Rights Reserved.</p>
+        <div class="img">
+            <i class="icon"></i><span>联系邮箱：1652198628@qq.com</span>
+        </div>
+
+        <div class="img">
+            <i class="icon1"></i><span>联系地址：17号楼651</span>
+        </div>
+
+        <div class="img">
+            <i class="icon2"></i><span>联系电话：17864286242</span>
+        </div>
+
+
+    </div>
+
+</div>
+
+</BODY>
+</HTML>
+
+
+
+<script>
+   $("#saveUserInfo").click(function(){
         var formObject = {};
         var formArray =$("#login_form").serializeArray();
         $.each(formArray,function(i,item){
@@ -69,14 +114,10 @@
                 {
                     alert(data.mess)
                 }
-
           },
             error:function(e){
                 alert("错误！！");
             }
         });
     });
-
-    </script>
-{% endblock %}
-
+</script>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<link href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet"
+      xmlns="http://www.w3.org/1999/html">
+
+<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+<script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.0.js"> </script>
+
+<!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+<script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form  id="fo">
+    <div class="container" >
+
+        </div>
+
+
+
+  <p><input type="checkbox" name="vehc" value="pop"  /><div class="row" type="checkbox">
+             <input type="checkbox" name="vehic" value="Car" > <div class="col-md-12"  style="background-color: #dedef8;box-shadow: inset 1px -1px 1px #444, inset -1px 1px 1px #444;">
+
+                               <div class="col-md-2" >
+                                          <div  class="shooping_goods_photo">
+                                              <img src="" >
+                                      </div>
+
+                                       </div>
+                                     <div class="col-md-4" >
+                                         <div class="shooping_goods_name" >
+                                           <p> io;</p>
+                                        </div>
+
+                                     </div>
+                                    <div class="col-md-2"  >
+                                         <div class="shooping_goods_price">
+                                             <p>uo</p>
+
+                                        </div>
+
+                                     </div>
+                                  <div class="col-md-2"  >
+                                        <div class="goods_num"  id="io;">
+                                               <p class="glyphicon glyphicon-minus"></p>
+                                              <p class="num">p98p</p>
+
+                                             <P class="glyphicon glyphicon-plus"></P>
+                                         </div>
+
+                                     </div>
+                                     <div class="col-md-2"  >
+                                       <div >
+                                          <p class="remove">移除购物车</p>
+                                   </div>
+
+                                  </div>
+
+                            </div> </p>
+  <input type="submit" value="Submit"  id="bu"/>
+</form>
+</body>
+<script>
+
+      $("#bu").click(function(){
+
+        var formObject = {};
+        var formArray =$("#fo").serializeArray();
+        $.each(formArray,function(i,item){
+            formObject[item.name] = item.value;
+        });
+        $.ajax({
+            url:"/login",
+            type:"post",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(formObject),
+            dataType: "json",
+             success:function(data){ //后端返回的json数据（此处data为json对象）
+                if(data.mess=='ok')
+                {
+                    window.location.href="/";
+                }
+              else
+                {
+                    alert(data.mess)
+                }
+
+          },
+            error:function(e){
+                alert("错误！！");
+            }
+        });
+    });
+</script>
+</html>

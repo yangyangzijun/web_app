@@ -1,0 +1,120 @@
+#head{
+	height: 120px;
+	width: 100%;
+	background-color:  #a2d5f0;
+	//background-color:  #FFFFFF;
+	text-align: center;
+	position: relative;
+}
+div.title {
+	font-family: "宋体";
+	color: #FFFFFF;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);  /* 使用css3的transform来实现 */
+	font-size: 36px;
+	height: 40px;
+	width: 30%;
+
+	text-align:center;
+
+}
+    BODY {
+	BACKGROUND-POSITION: 50% bottom; FONT-SIZE: 12px; BACKGROUND-IMAGE: url('bg_login.png'); MARGIN: 0px; BACKGROUND-REPEAT: repeat-x; BACKGROUND-COLOR: #a2d5f0
+}
+TD {
+	FONT-SIZE: 12px
+}
+DIV {
+	FONT-SIZE: 12px
+}
+#login {
+	BACKGROUND-POSITION: 30% bottom; BACKGROUND-IMAGE: url(bg_login.png); COLOR: white; BACKGROUND-REPEAT: repeat-x; BACKGROUND-COLOR: #a2d5f0
+}
+#login #root {
+	BACKGROUND-IMAGE: url('login_root.png')
+}
+#login #main {
+	BACKGROUND-IMAGE: url('login_main.png')
+}
+#login  TD {
+	COLOR: white
+}
+#login A {
+	COLOR: white; TEXT-DECORATION: none
+}
+#login .textbox {
+	WIDTH: 180px
+}
+
+
+#foot {
+
+	//background-color: #CC9933;
+	position: relative;
+    //left:100px;
+    top:30px;
+    text-align:center;
+   }
+div.copyright{
+	font-family: "宋体";
+	color: #FFFFFF;
+	position: absolute;
+	top: 60%;
+	left: 50%;
+	transform: translate(-50%, -50%);  /* 使用css3的transform来实现 */
+	height: 60px;
+	width: 40%;
+	text-align:center;
+	vertical-align: middle;
+}
+
+
+#foot .copyright .img {
+	width: 100%;
+	height: 24px;
+	position: relative;
+}
+div.copyright .img .icon {
+	display: inline-block;
+	width: 24px;
+	height: 24px;
+	margin-left: 22px;
+	vertical-align: middle;
+	background-image: url("fa fa-camera-retro"');
+	background-repeat: no-repeat;
+	vertical-align: middle;
+	margin-right: 5px;
+}
+
+div.copyright .img .icon1 {
+	display: inline-block;
+	width: 24px;
+	height: 24px;
+	margin-left: 22px;
+	vertical-align: middle;
+	background-image: url("fa fa-camera-retro");
+	background-repeat: no-repeat;
+	vertical-align: middle;
+	margin-right: 5px;
+}
+div.copyright .img .icon2 {
+    display:flex;
+	align-items:center;
+	justify-content:center;
+
+	display: inline-block;
+	width: 24px;
+	height: 24px;
+	margin-left: 22px;
+	vertical-align: middle;
+	background-image: url('http://www.upc.edu.cn/__local/C/64/9B/25FEC64E41AB1C48DAB6566B405_9C26E8C8_781.png?e=.png');
+	background-repeat: no-repeat;
+	vertical-align: middle;
+	margin-right: 5px;
+}
+#foot .copyright p {
+	height: 24px;
+	width: 100%;
+}
