@@ -1,12 +1,267 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+{% extends 'base.html' %}
+
+
+{% block footer %}
+<html>
 <body>
-{% for l in res.data %}
-<p>{{ l[0] }}</p>
-{% endfor %}
+<style type="text/css">
+ .container .row{width: 1226px;height: 340px;}
+.container .row .col-xs-6 col-sm-3{width: 234px;height: 339px;background: rgb(250,250,250);}
+.container .row .col-xs-6 col-sm-3:nth-of-type(1){border-top: 1px solid orange;margin-right:14px;}
+.container .row .col-xs-6 col-sm-3:nth-of-type(2){border-top: 1px solid green;margin-right:14px;}
+.container .row .col-xs-6 col-sm-3:nth-of-type(3){border-top: 1px solid blue;margin-right:14px;}
+.container .row .col-xs-6 col-sm-3:nth-of-type(4){border-top: 1px solid red;margin-right:14px;}
+.container .row .col-xs-6 col-sm-3:nth-of-type(5){border-top: 1px solid teal;}
+.container .row .col-xs-6 col-sm-3 .sub_mingxing{padding: 37px;}
+.container .row .col-xs-6 col-sm-3 .sub_mingxing a img{display:block;width: 160px;height: 160px;opacity: 0.85}
+.container .row .col-xs-6 col-sm-3 .sub_mingxing a img:hover{width: 160px;height: 160px;opacity: 1;}
+.container .row .col-xs-6 col-sm-3 .pinpai{width: 234px;height: 14px;line-height: 14px;text-align: center;margin-top: -10px;}
+.container .row .col-xs-6 col-sm-3 .pinpai a{font-size: 14px;color:#333;}
+.container .row .col-xs-6 col-sm-3 .youhui{width: 234px;height: 12px;line-height: 12px;margin:15px 0;font-size: 12px;color: rgb(176,176,176);text-align: center;}
+.container .row .col-xs-6 col-sm-3 .jiage{font-size: 14px;text-align: center;color:#ff6709;}
+
+
+
+</style>
+<style type="text/css">
+img{display:block;width: 160px;height: 160px;opacity: 0.85;margin-top: 50px;}
+img:hover{width: 160px;height: 160px;opacity: 1;}
+div.pinpai{width: 234px;height: 14px;line-height: 14px;text-align: center;margin-top: 0px;}
+div.pinpai a{font-size: 14px;color:#333;}
+div.jiage{font-size: 14px;text-align: center;color:#ff6709;}
+div.youhui{width: 234px;height: 12px;line-height: 12px;margin:15px 0;font-size: 12px;color: rgb(176,176,176);text-align: center;}
+    p.name{color:red;
+    margin-left:90px;
+    font-style: italic;
+	margin-top: 0.5em;
+	line-height: 1.5;
+    }
+    p.price{color:pink;
+    margin-left:90px;
+    }
+
+
+</style>
+<style>
+    body .productColor .rightBox .colorDes{width:100%;} .vp-head .vp-head-wrap-pc .vp-head-logo a svg{height:auto !important}
+
+
+</style>
+
+<div class="container">
+ <!-- Stack the columns on mobile by making one full-width and the other half-width -->
+
+
+<!-- Columns start at 50% wide on mobile and bump up to 33.3% wide on desktop -->
+<div class="row" >
+
+
+</div>
+
+<!-- Columns are always 50% wide, on mobile and desktop -->
+
+</div>
+
+<div id="user_mess">
+    <a class="btn btn-primary " href="/regrist" role="button" style="position: absolute;right: 55px;top: 5px;">注册</a>
+    <a class="btn btn-primary" href="/login" role="button" style="position: absolute;right: 155px;top: 5px;">登录</a>
+</div>
 </body>
 </html>
+<script>
+
+
+        $.ajax({
+            url: "/test",
+            type: "post",
+            contentType: "application/json; charset=utf-8",
+
+            dataType: "json",
+            success: function (data) { //后端返回的json数据（此处data为json对象）
+              if (data.mess=='ok') {
+                  for (var i = 0; i < data.data.length; i++) {
+                      var s = '<div class="col-md-12" style="background-color: #dedef8;box-shadow: inset 1px -1px 1px #444, inset -1px 1px 1px #444;">' +
+                          '' +
+                          '      <div class="col-md-2" >' +
+                          '                <div  class="shooping_goods_photo">' +
+                          '                    <img src="/' + data.data[i].main_pic_addr + '" >' +
+                          '                </div>' +
+                          '' +
+                          '             </div>' +
+                          '            <div class="col-md-4" >' +
+                          '                <div class="shooping_goods_name" >' +
+                          '                   <p>' + data.data[i].goods_name + '</p>' +
+                          '                </div>' +
+
+                          '             </div>' +
+                          '            <div class="col-md-2"  >' +
+                          '                <div class="shooping_goods_price">' +
+                          '                   <p>' + data.data[i].goods_price + '</p>' +
+
+                          '                </div>' +
+
+                          '             </div>' +
+                          '            <div class="col-md-2"  >' +
+                          '                <div class="goods_num"  id="' + data.data[i].orders_id + '">' +
+                          '                     <p class="glyphicon glyphicon-minus"></p>' +
+                          '                    <p class="num">' + data.data[i].order_num + '</p>' +
+
+                          '                    <P class="glyphicon glyphicon-plus"></P>' +
+                          '                </div>' +
+
+                          '             </div>' +
+                          '            <div class="col-md-2"  >' +
+                          '                <div >' +
+                          '                    <p class="remove">移除购物车</p>' +
+                          '                </div>' +
+
+                          '             </div>' +
+
+                          '  </div>';
+                      $('.row').append(s);
+
+
+
+                  }
+                   $(".col-md-12").each(function(){
+      alert($(this).html());
+    });
+
+              }
+              else {
+                alert(data.mess);
+              }
+
+            },
+            error: function (e) {
+                alert("错误！！");
+            }
+        });
+
+
+
+
+
+</script>
+
+<script>
+$(".remove").live('click',function () {
+
+    var submit_data = {};
+    submit_data['order_id']=$(this).parent().parent().prev().children('.goods_num').attr('id')
+    $.ajax({
+            url:"/remove",
+            type:"post",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(submit_data),
+            dataType: "json",
+             success:function(data){ //后端返回的json数据（此处data为json对象）
+                if(data.mess=='ok') {
+                    $("#"+submit_data['order_id']).parent().parent().remove();
+                }
+
+              else
+                {
+                    alert(data.mess)
+                }
+
+          },
+            error:function(e){
+                alert("错误！！");
+            }
+        });
+});
+$(".glyphicon.glyphicon-minus").live('click', function(){
+
+    var po =  parseInt($(this).parent().find(".num").html().toString());
+
+    if(po>1)
+    {
+        var submit_data = {};
+    submit_data['order_id']=$(this).parent().attr('id');
+    submit_data['op'] = 'minus';
+
+    $.ajax({
+            url:"/shoopping_cart",
+            type:"post",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(submit_data),
+            dataType: "json",
+             success:function(data){ //后端返回的json数据（此处data为json对象）
+                if(data.mess=='ok') {
+                    var num = $("#" + submit_data['order_id']).find(".num").html().toString();
+                    num = parseInt(num)-1;
+
+                    $("#"+submit_data['order_id']).html('<p class="glyphicon glyphicon-minus"></p>\n' +
+                        '                   <p class="num">'+num+'</p>\n' +
+                        '\n' +
+                        '                    <P class="glyphicon glyphicon-plus"></P>');
+                }
+
+              else
+                {
+                    alert(data.mess)
+                }
+
+          },
+            error:function(e){
+                alert("错误！！");
+            }
+        });
+    }
+
+
+
+
+
+});
+$(".glyphicon.glyphicon-plus").live('click', function(){
+
+    var po =  parseInt($(this).parent().find(".num").html().toString());
+
+
+    {
+        var submit_data = {};
+    submit_data['order_id']=$(this).parent().attr('id');
+    submit_data['op'] = 'plus';
+
+    $.ajax({
+            url:"/shoopping_cart",
+            type:"post",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(submit_data),
+            dataType: "json",
+             success:function(data){ //后端返回的json数据（此处data为json对象）
+                if(data.mess=='ok') {
+                    var num = $("#" + submit_data['order_id']).find(".num").html().toString();
+                    num = parseInt(num)+1;
+
+                    $("#"+submit_data['order_id']).html('<p class="glyphicon glyphicon-minus"></p>\n' +
+                        '                   <p class="num">'+num+'</p>\n' +
+                        '\n' +
+                        '                    <P class="glyphicon glyphicon-plus"></P>');
+                }
+
+              else
+                {
+                    alert(data.mess)
+                }
+
+          },
+            error:function(e){
+                alert("错误！！");
+            }
+        });
+    }
+
+
+
+
+
+});
+</script>
+<script>
+
+</script>
+{% endblock %}
+

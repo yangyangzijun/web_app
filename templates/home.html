@@ -48,71 +48,53 @@ div.youhui{width: 234px;height: 12px;line-height: 12px;margin:15px 0;font-size: 
 
 </style>
 
+
 <div class="container">
+    <div class="row">
+
+<p class="lolo"> 787878789</p>
+ <p class="lolo"> 787878789</p>
+
+<div class="col-xs-6 col-sm-3">.col-xs-6 .col-sm-3</div>
+  <div class="col-xs-6 col-sm-3">.col-xs-6 .col-sm-3</div>
+
+  <!-- Add the extra clearfix for only the required viewport -->
+  <div class="clearfix visible-xs-block"></div>
+
+  <div class="col-xs-6 col-sm-3">.col-xs-6 .col-sm-3</div>
+  <div class="col-xs-6 col-sm-3">.col-xs-6 .col-sm-3</div>
+  <div class="col-xs-6 col-sm-3">.col-xs-6 .col-sm-3</div>
+  <div class="col-xs-6 col-sm-3">.col-xs-6 .col-sm-3</div>
+
+  <!-- Add the extra clearfix for only the required viewport -->
+  <div class="clearfix visible-xs-block"></div>
+
+  <div class="col-xs-6 col-sm-3">.col-xs-6 .col-sm-3</div>
+  <div class="col-xs-6 col-sm-3">.col-xs-6 .col-sm-3</div>
+
+
+<p class="pl">sefewf</p>
+
+</div>
+
     <div class="row" id="list_goods">
 
-        <div class="col-xs-6 col-sm-3">
-            <div class="sub_mingxing">
-                <img src="https://shopstatic.vivo.com.cn/vivoshop/commodity/82/1882_1534852360612hd_bi_750x750.png">
-            </div>
-            <div class="pinpai"><a href="">小米MIX</a></div>
-            <div class="youhui">5月9日-21日享花呗12期分期免息</div>
-            <div class="jiage">￥ 3499元起</div>
-        </div>
-
-        <div class="col-xs-6 col-sm-3">
-            <div class="sub_mingxing">
-                <img src="https://shopstatic.vivo.com.cn/vivoshop/commodity/82/1882_1534852360612hd_bi_750x750.png">
-            </div>
-            <div class="pinpai"><a href="">小米5s</a></div>
-            <div class="youhui">5月9日-10日，下单立减200元</div>
-            <div class="jiage">￥ 1999元</div>
-        </div>
-
-        <!-- Add the extra clearfix for only the required viewport -->
-
-        <div class="col-xs-6 col-sm-3">
-            <div class="sub_mingxing">
-                <img src="https://shopstatic.vivo.com.cn/vivoshop/commodity/82/1882_1534852360612hd_bi_750x750.png">
-            </div>
-            <div class="pinpai"><a href="">小米电视3s 55英寸</a></div>
-            <div class="youhui">5月9日，下单立减200元</div>
-            <div class="jiage">3999元</div>
-        </div>
-        <div class="col-xs-6 col-sm-3">
-            <div class="sub_mingxing">
-                <img src="https://shopstatic.vivo.com.cn/vivoshop/commodity/82/1882_1534852360612hd_bi_750x750.png">
-            </div>
-            <div class="pinpai"><a href="">小米笔记本</a></div>
-            <div class="youhui">更轻更薄，像杂志一样随身携带</div>
-            <div class="jiage">3599元起</div>
-        </div>
-        <div class="col-xs-6 col-sm-3">
-            <div class="sub_mingxing">
-                <img src="https://shopstatic.vivo.com.cn/vivoshop/commodity/82/1882_1534852360612hd_bi_750x750.png">
-            </div>
-            <div class="pinpai"><a href="">小米笔记本</a></div>
-            <div class="youhui">更轻更薄，像杂志一样随身携带</div>
-            <div class="jiage">3599元起</div>
-        </div>
-        <div class="col-xs-6 col-sm-3">
-            <div class="sub_mingxing">
-                <img src="https://shopstatic.vivo.com.cn/vivoshop/commodity/82/1882_1534852360612hd_bi_750x750.png">
-            </div>
-            <div class="pinpai"><a href="">小米</a></div>
-            <div class="youhui">更大</div>
-            <div class="jiage">3599元起</div>
-        </div>
-    </div>
+</div>
 </div>
 
 <div id="user_mess">
+ <p class="lolo"> 787878789</p>
     <a class="btn btn-primary " href="/regrist" role="button" style="position: absolute;right: 55px;top: 5px;">注册</a>
     <a class="btn btn-primary" href="/login" role="button" style="position: absolute;right: 155px;top: 5px;">登录</a>
 </div>
+
+
 </body>
 </html>
 <script>
+$('.lolo').click(function () {
+    alert('ok');
+});
         $.ajax({
             url: "/check_login",
             type: "get",
@@ -153,7 +135,7 @@ $.ajax({
                             '            <div class="pinpai"><a href="">'+data.data[i].goods_name+'</a></div>\n' +
                             '            <div class="youhui">'+data.data[i].goods_type+'</div>\n' +
                             '            <div class="jiage"  onclick="add()">'+data.data[i].goods_price+'' +'\'<a class="btn btn-primary "  id="' +data.data[i].goods_id+
-                            '" role="button" style="position: absolute;right: 15px; bottom: 0px;">购买</a>\''+
+                            '" role="button" style="position: absolute;right: 15px; bottom: 0px;">购买</a>  <p class="lolo"> 787878789</p>\''+
                             '</div>\n' +
                             '        </div>';
                          document.getElementById("list_goods").innerHTML += p;
@@ -172,6 +154,7 @@ $.ajax({
                 alert("错误！！");
             }
         });
+
 function add() {
     var lo= {};
                  lo['goods_id']=event.target.getAttribute("id");

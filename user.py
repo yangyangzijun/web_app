@@ -15,6 +15,36 @@ class User:
         self.username = name
         self.passwd = pswd
         self.sex=sex
+    def add_order(self,order_id):
+        try:  # test pswd
+            cursor = db.cursor()
+            cursor.execute(f"update orders set num=num+1 where order_id = {order_id}")
+            db.commit()
+            cursor.close()
+            return 1
+        except:
+            return 0
+
+    def remove_order(self, order_id):
+        try:  # test pswd
+            cursor = db.cursor()
+            cursor.execute(f"delete from orders where order_id = '{order_id}' ")
+            cursor.close()
+            return 1
+        except:
+            return -1
+
+    def reduce_order(self, order_id):
+        try:  # test pswd
+            cursor = db.cursor()
+           
+            cursor.execute(f"update orders set num=num-1 where order_id = {order_id}")
+            db.commit()
+            cursor.close()
+            return 1
+        except:
+            return 0
+
     def test_password(self):
        
         try:
@@ -103,9 +133,32 @@ class Order:
         self.user_id=user_id
     def update(self):
         cursor = db.cursor()
-        cursor.execute(f"insert into orders (user_id,goods_id) values ('{self.user_id}','{self.goods_id}')")
+        cursor.execute(f"select * from orders where user_id = {self.user_id} and goods_id = {self.goods_id}")
+        data = cursor.fetchall()
+        print(789)
+        if len(data) == 0:
+            
+            cursor.execute(f"insert into orders (user_id,goods_id) values ('{self.user_id}','{self.goods_id}')")
+        else:
+            cursor.execute(f"update orders set  num = num + 1 where user_id = {self.user_id} and  goods_id = {self.goods_id}")
+        
         db.commit()
         cursor.close()
+
+   
+        
+
+
+
+
+
+
+
+
+
+
+
+
             
         
     

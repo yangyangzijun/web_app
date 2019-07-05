@@ -27,10 +27,60 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 CORS(app, supports_credentials=True)
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
-@app.route('/test',methods=['GET','POST'])
+@app.route("/remove",methods= ['GET','POST'])
+def remove():
+    if 'username' in session:
+        u = User(name=session['username'])
+        request_data = json.loads(request.data.decode('utf-8'))
+        u.remove_order(request_data['order_id'])
+        return jsonify({'mess': 'ok'})
+    else:
+        return jsonify({'mess': '请先登录'})
+@app.route('/shoopping_cart',methods=['GET','POST'])
+def shoopping_cart():
+    if request.method=="POST":
+        if 'username' in session:
+            u=User(name=session['username'])
+            request_data = json.loads(request.data.decode('utf-8'))
+            if request_data['op'] == 'minus':
+                if u.reduce_order(request_data['order_id'])==1:
+                    return jsonify({'mess':'ok'})
+                else:
+                    return jsonify({'mess':'error'})
+            elif request_data['op'] == 'plus':
+                if u.add_order(request_data['order_id'])==1:
+                    return jsonify({'mess':'ok'})
+                else:
+                    return jsonify({'mess':'error'})
+                
+        else:
+            return jsonify({'mess':'请先登录'})
 
+@app.route('/test',methods=['GET','POST'])
 def test():
-    return  render_template('html.html')
+    if request.method=='GET':
+        return render_template('admin.html')
+    else:
+        if 'username' in session:
+            cursor = db.cursor()
+            cursor.execute(
+                f"select orders.order_id,goods.main_pic_addr,goods.goods_name,goods.price,orders.num from orders,user,goods where"
+                f" user.user_id=orders.user_id and orders.goods_id=goods.goods_id  and user.username='{session['username']}'")
+            cursor.close()
+            data = cursor.fetchall()
+            li = []
+            for l in data:
+                res = {'orders_id': l[0], 'main_pic_addr': 'static/' + l[1], 'goods_name': l[2], 'goods_price': l[3],
+                       'order_num': l[4]}
+                li.append(res)
+            result = {}
+            result['data'] = li
+            result['mess'] = 'ok'
+            return jsonify(result)
+        else:
+            return jsonify({'mess': '请先登录'})
+        
+    
 @app.route('/create_order',methods=['GET','POST'])
 
 def create_order():
