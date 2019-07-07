@@ -1,233 +1,81 @@
-{% extends 'base.html' %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>测试checked用法</title>
+    <!--引入 less 样式表-->
+    <link rel="stylesheet/less" type="text/css" href="/less.less">
+
+    <!-- 引入less样式文件 -->
 
 
-{% block footer %}
-<html>
+    <script>less.watch();</script>
+
+</head>
 <body>
-<style type="text/css">
- .container .row{width: 1226px;height: 340px;}
-.container .row .col-xs-6 col-sm-3{width: 234px;height: 339px;background: rgb(250,250,250);}
-.container .row .col-xs-6 col-sm-3:nth-of-type(1){border-top: 1px solid orange;margin-right:14px;}
-.container .row .col-xs-6 col-sm-3:nth-of-type(2){border-top: 1px solid green;margin-right:14px;}
-.container .row .col-xs-6 col-sm-3:nth-of-type(3){border-top: 1px solid blue;margin-right:14px;}
-.container .row .col-xs-6 col-sm-3:nth-of-type(4){border-top: 1px solid red;margin-right:14px;}
-.container .row .col-xs-6 col-sm-3:nth-of-type(5){border-top: 1px solid teal;}
-.container .row .col-xs-6 col-sm-3 .sub_mingxing{padding: 37px;}
-.container .row .col-xs-6 col-sm-3 .sub_mingxing a img{display:block;width: 160px;height: 160px;opacity: 0.85}
-.container .row .col-xs-6 col-sm-3 .sub_mingxing a img:hover{width: 160px;height: 160px;opacity: 1;}
-.container .row .col-xs-6 col-sm-3 .pinpai{width: 234px;height: 14px;line-height: 14px;text-align: center;margin-top: -10px;}
-.container .row .col-xs-6 col-sm-3 .pinpai a{font-size: 14px;color:#333;}
-.container .row .col-xs-6 col-sm-3 .youhui{width: 234px;height: 12px;line-height: 12px;margin:15px 0;font-size: 12px;color: rgb(176,176,176);text-align: center;}
-.container .row .col-xs-6 col-sm-3 .jiage{font-size: 14px;text-align: center;color:#ff6709;}
-
-
-
-</style>
-<style type="text/css">
-img{display:block;width: 160px;height: 160px;opacity: 0.85;margin-top: 50px;}
-img:hover{width: 160px;height: 160px;opacity: 1;}
-div.pinpai{width: 234px;height: 14px;line-height: 14px;text-align: center;margin-top: 0px;}
-div.pinpai a{font-size: 14px;color:#333;}
-div.jiage{font-size: 14px;text-align: center;color:#ff6709;}
-div.youhui{width: 234px;height: 12px;line-height: 12px;margin:15px 0;font-size: 12px;color: rgb(176,176,176);text-align: center;}
-    p.name{color:red;
-    margin-left:90px;
-    font-style: italic;
-	margin-top: 0.5em;
-	line-height: 1.5;
-    }
-    p.price{color:pink;
-    margin-left:90px;
-    }
-
-
-</style>
-<style>
-    body .productColor .rightBox .colorDes{width:100%;} .vp-head .vp-head-wrap-pc .vp-head-logo a svg{height:auto !important}
-
-
-</style>
-
-<div class="container">
-    <div class="row" id="list_goods">
-
-        <div class="col-xs-6 col-sm-3">
-            <div class="sub_mingxing">
-                <img src="https://shopstatic.vivo.com.cn/vivoshop/commodity/82/1882_1534852360612hd_bi_750x750.png">
-            </div>
-            <div class="pinpai"><a href="">小米MIX</a></div>
-            <div class="youhui">5月9日-21日享花呗12期分期免息</div>
-            <div class="jiage">￥ 3499元起</div>
+    <!--<input type="checkbox" name="category" value="今日话题" id="category"/>今日话题-->
+    <!-- div块，显示整个checkbox表 -->
+    <div class="show_box">
+        <div class="header_row">
+            <label for="fruit"><input type="checkbox" name="fruit" id="fruit" value="水果"/>水果</label>
         </div>
+        <div class="list_row">
+            <label for="apple"><input type="checkbox" name="fruit-items" id="apple" value="苹果"/>苹果</label>
+        </div>
+        <div class="list_row">
+            <label for="banana"><input type="checkbox" name="fruit-items" id="banana" value="香蕉"/>香蕉</label>
+        </div>
+        <div class="list_row">
+            <label for="strawberry"><input type="checkbox" name="fruit-items" id="strawberry" value="草莓"/>草莓</label>
+        </div>
+        <div class="list_row">
+            <label for="peach"><input type="checkbox" name="fruit-items" id="peach" value="桃子"/>桃子</label>
 
-        <div class="col-xs-6 col-sm-3">
-            <div class="sub_mingxing">
-                <img src="https://shopstatic.vivo.com.cn/vivoshop/commodity/82/1882_1534852360612hd_bi_750x750.png">
-            </div>
-            <div class="pinpai"><a href="">小米5s</a></div>
-            <div class="youhui">5月9日-10日，下单立减200元</div>
-            <div class="jiage">￥ 1999元</div>
-        </div>
-
-        <!-- Add the extra clearfix for only the required viewport -->
-
-        <div class="col-xs-6 col-sm-3">
-            <div class="sub_mingxing">
-                <img src="https://shopstatic.vivo.com.cn/vivoshop/commodity/82/1882_1534852360612hd_bi_750x750.png">
-            </div>
-            <div class="pinpai"><a href="">小米电视3s 55英寸</a></div>
-            <div class="youhui">5月9日，下单立减200元</div>
-            <div class="jiage">3999元</div>
-        </div>
-        <div class="col-xs-6 col-sm-3">
-            <div class="sub_mingxing">
-                <img src="https://shopstatic.vivo.com.cn/vivoshop/commodity/82/1882_1534852360612hd_bi_750x750.png">
-            </div>
-            <div class="pinpai"><a href="">小米笔记本</a></div>
-            <div class="youhui">更轻更薄，像杂志一样随身携带</div>
-            <div class="jiage">3599元起</div>
-        </div>
-        <div class="col-xs-6 col-sm-3">
-            <div class="sub_mingxing">
-                <img src="https://shopstatic.vivo.com.cn/vivoshop/commodity/82/1882_1534852360612hd_bi_750x750.png">
-            </div>
-            <div class="pinpai"><a href="">小米笔记本</a></div>
-            <div class="youhui">更轻更薄，像杂志一样随身携带</div>
-            <div class="jiage">3599元起</div>
-        </div>
-        <div class="col-xs-6 col-sm-3">
-            <div class="sub_mingxing">
-                <img src="https://shopstatic.vivo.com.cn/vivoshop/commodity/82/1882_1534852360612hd_bi_750x750.png">
-            </div>
-            <div class="pinpai"><a href="">小米</a></div>
-            <div class="youhui">更大</div>
-            <div class="jiage">3599元起</div>
         </div>
     </div>
-    <!-- Stack the columns on mobile by making one full-width and the other half-width -->
-<div class="row">
-  <div class="col-xs-12 col-md-8">.col-xs-12 .col-md-8</div>
-  <div class="col-xs-6 col-md-4">.col-xs-6 .col-md-4</div>
-</div>
+    <!-- 全选框、取消全选框 -->
+    <!-- checkbox列表 -->
 
-<!-- Columns start at 50% wide on mobile and bump up to 33.3% wide on desktop -->
-<div class="row">
-  <div class="col-xs-6 col-md-4">.col-xs-6 .col-md-4</div>
-  <div class="col-xs-6 col-md-4">.col-xs-6 .col-md-4</div>
-  <div class="col-xs-6 col-md-4">.col-xs-6 .col-md-4</div>
-</div>
+    <script type="text/javascript">
+        window.onload = function () {
+            //水果全选框
+            var fruit = document.getElementById('fruit');
+            fruit.addEventListener('click', selectAllItems);
+            fruit.addEventListener('click', undoAllItems);
 
-<!-- Columns are always 50% wide, on mobile and desktop -->
-<div class="row">
-  <div class="col-xs-8">.col-xs-6</div>
-  <div class="col-xs-6">.col-xs-6</div>
-</div>
-</div>
-
-<div id="user_mess">
-    <a class="btn btn-primary " href="/regrist" role="button" style="position: absolute;right: 55px;top: 5px;">注册</a>
-    <a class="btn btn-primary" href="/login" role="button" style="position: absolute;right: 155px;top: 5px;">登录</a>
-</div>
-</body>
-</html>
-<script>
-        $.ajax({
-            url: "/check_login",
-            type: "get",
-            contentType: "application/json; charset=utf-8",
-
-            dataType: "json",
-            success: function (data) { //后端返回的json数据（此处data为json对象）
-                if (data.mess == 'ok') {
-                    var m = '<a class="btn btn-primary" href="/login" role="button" style="position: absolute;right: 155px;top: 5px;"> 欢迎' +
-                        data.username +'</a>'+'<a class="btn btn-primary" href="/logout" role="button" style="position: absolute;right: 90px;top: 5px;">注销</a>'+
-                        '<a class="btn btn-primary" href="/shopping_cart" role="button" style="position: absolute;right: 10px;top: 5px;">购物车</a>';
-
-                     document.getElementById("user_mess").innerHTML = m;
-                }
-                else {
-
-                }
-
-            },
-            error: function (e) {
-                alert("错误！！");
+            //子节点全选时，全选按钮勾选
+            var fruitItems = document.getElementsByName('fruit-items');
+            for(var i=0; i<fruitItems.length; i++) {
+                fruitItems[i].addEventListener('click', itemsSelectParent);
             }
-        });
-$.ajax({
-            url:"/list_goods",
-            type:"post",
 
-
-            dataType: "json",
-             success:function(data){ //后端返回的json数据（此处data为json对象）
-                if(data.mess=='ok')
-                {
-                    for(var i=0;i<data.data.length;i++)
-                    {
-                        var  p=' <div class="col-xs-6 col-sm-3">\n' +
-                            '            <div class="sub_mingxing">\n' +
-                            '                <img src="' + data.data[i].goods_photo +' "></div>\n' +
-                            '            <div class="pinpai"><a href="">'+data.data[i].goods_name+'</a></div>\n' +
-                            '            <div class="youhui">'+data.data[i].goods_type+'</div>\n' +
-                            '            <div class="jiage"  onclick="add()">'+data.data[i].goods_price+'' +'\'<a class="btn btn-primary "  id="' +data.data[i].goods_id+
-                            '" role="button" style="position: absolute;right: 15px; bottom: 0px;">购买</a>\''+
-                            '</div>\n' +
-                            '        </div>';
-                         document.getElementById("list_goods").innerHTML += p;
-                    }
-
-                    document.getElementById("list_goods").innerHTML += s;
-
-                }
-              else
-                {
-                    alert(data.mess)
-                }
-
-          },
-            error:function(e){
-                alert("错误！！");
-            }
-        });
-function add() {
-    var lo= {};
-                 lo['goods_id']=event.target.getAttribute("id");
-
-    $.ajax({
-        url: "/check_login",
-        type: "get",
-        contentType: "application/json; charset=utf-8",
-
-        dataType: "json",
-        success: function (data) { //后端返回的json数据（此处data为json对象）
-            if (data.mess == 'ok') {
-
-
-
-                 $.ajax({
-                            url:"/create_order",
-                            type:"post",
-                            contentType: "application/json; charset=utf-8",
-                            data: JSON.stringify(lo),
-                            dataType: "json",
-                            success: function (data){
-
-                            }});
-                            }
-            else
-            {
-                alert("请登录！")
-            }
+            //选择所有items
+            function selectAllItems() {
+                if( fruit.checked) {
+                    var fruitItems = document.getElementsByName('fruit-items');
+                    for(var i=0; i<fruitItems.length; i++) {
+                        if(!fruitItems[i].checked) {
+                            fruitItems[i].checked = true;
                         }
-                    });
+                    }
+                }
+            }
 
+            //取消全选
+            function undoAllItems() {
+                if( !fruit.checked) {
+                    var fruitItems = document.getElementsByName('fruit-items');
+                    for(var i=0; i<fruitItems.length; i++) {
+                        if(fruitItems[i].checked) {
+                            fruitItems[i].checked = false;
+                        }
+                    }
+                }
+            }
 
-}
+            //子节点全选时，全选按钮勾选
 
-
-
-</script>
-
-{% endblock %}
-
+        };
+    </script>
+</body>
+<

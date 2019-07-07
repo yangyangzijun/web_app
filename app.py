@@ -7,7 +7,9 @@ import psutil, time,json
 import pymysql
 import json
 from redis import StrictRedis
-from user import User,Goods,db
+from user import *
+from red import *
+
 
 redis = StrictRedis(host='127.0.0.1', port=6379, db=0, password='')
 
@@ -20,6 +22,49 @@ UPLOAD_FOLDER = 'static'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 basedir = os.path.abspath(os.path.dirname(__file__))
 ALLOWED_EXTENSIONS = set(['txt', 'png', 'jpg', 'xls', 'JPG', 'PNG', 'xlsx', 'gif', 'GIF'])
+
+@app.route('/pay',methods=['POST','GET'])
+def pay():
+    request_data = json.load(request.data.decode('utf-8'))
+
+    s = ""
+    for l in request_data:
+        s += str(l) + ','
+    #return  jsonify({'mess':cal_sub(s)})
+
+
+    li=[]
+    
+    s=""
+    for l in li:
+        s +=str(l)+','
+    print(s[:-1])
+    
+    
+    cursor = db.cursor()
+    cursor.execute(f"select sum(price*num) from orders,goods where goods.goods_id = orders.goods_id and orders.order_id in ({ s[:-1]})")
+    data = cursor.fetchall()
+    
+    return jsonify({'mess':buy(cal_sub(s))})
+@app.route('/cal_sub', methods=['POST', 'GET'])
+def cal_su():
+    if request.method=="GET":
+        return render_template('lop.html')
+    else:
+        data = json.loads(request.data.decode('utf-8'))
+        data = data['data']
+        s=''
+        for l in  data:
+            
+            s +=str(l)+','
+        
+   
+        return jsonify({"mess": buy(int(cal_sub(s)))})
+      
+      
+      
+    
+    
 
 
 # 用于判断文件后缀
@@ -277,4 +322,4 @@ if __name__ == '__main__':
 
     
 
-        
+    

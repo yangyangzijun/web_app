@@ -7,6 +7,14 @@ db = pymysql.connect(
     db='web_db',
     charset='utf8'
 )
+def cal_sub(s):
+    print(s[0:-1])
+    
+    cursor = db.cursor()
+    cursor.execute(f"select sum(price*num) from orders,goods where goods.goods_id = orders.goods_id and orders.order_id in ({s[0:-1]})")
+    cursor.close()
+    return cursor.fetchall()[0][0]
+    
 class User:
     username = ''
     passwd = ''

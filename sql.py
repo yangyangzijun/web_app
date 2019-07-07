@@ -1,174 +1,163 @@
-import logging
-import traceback
+#!/usr/bin/env python
+# -*- coding:utf8 -*-
 
-from alipay.aop.api.AlipayClientConfig import AlipayClientConfig
-from alipay.aop.api.DefaultAlipayClient import DefaultAlipayClient
-from alipay.aop.api.FileItem import FileItem
-from alipay.aop.api.domain.AlipayTradeAppPayModel import AlipayTradeAppPayModel
-from alipay.aop.api.domain.AlipayTradePagePayModel import AlipayTradePagePayModel
-from alipay.aop.api.domain.AlipayTradePayModel import AlipayTradePayModel
-from alipay.aop.api.domain.GoodsDetail import GoodsDetail
-from alipay.aop.api.domain.SettleDetailInfo import SettleDetailInfo
-from alipay.aop.api.domain.SettleInfo import SettleInfo
-from alipay.aop.api.domain.SubMerchant import SubMerchant
-from alipay.aop.api.request.AlipayOfflineMaterialImageUploadRequest import AlipayOfflineMaterialImageUploadRequest
-from alipay.aop.api.request.AlipayTradeAppPayRequest import AlipayTradeAppPayRequest
-from alipay.aop.api.request.AlipayTradePagePayRequest import AlipayTradePagePayRequest
-from alipay.aop.api.request.AlipayTradePayRequest import AlipayTradePayRequest
-from alipay.aop.api.response.AlipayOfflineMaterialImageUploadResponse import AlipayOfflineMaterialImageUploadResponse
-from alipay.aop.api.response.AlipayTradePayResponse import AlipayTradePayResponse
+# pip install pycryptodome   需要模块加密方面的模块
+__author__ = 'bobby'
 
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s %(levelname)s %(message)s',
-    filemode='a',)
-logger = logging.getLogger('')
+from datetime import datetime
+from Crypto.PublicKey import RSA
+from Crypto.Signature import PKCS1_v1_5
+from Crypto.Hash import SHA256
+from base64 import b64encode, b64decode
+from urllib.parse import quote_plus
+from urllib.parse import urlparse, parse_qs
+import urllib.request
+from base64 import decodebytes, encodebytes
+import time
+import json
+import urllib
+proxy_handler = urllib.request.ProxyHandler({'http': 'http://127.0.0.1:8888/'})
+opener = urllib.request.build_opener(proxy_handler)
+
+
+
+handler=urllib.request.ProxyHandler({'https':'127.0.0.1:888'})
+opener=urllib.request.build_opener(handler)
+    #安装opener设置全局代理，只要加载网页都会使用该代理
+urllib.request.install_opener(opener)
+a = urllib.request.Request("http://www.baidu.com")
+print(a)
+
+class AliPay(object):
+    """
+    支付宝支付接口
+    """
+    
+    def __init__(self, appid, app_notify_url, app_private_key_path,
+                 alipay_public_key_path, return_url, debug=False):
+        self.appid = appid
+        self.app_notify_url = app_notify_url
+        self.app_private_key_path = app_private_key_path
+        self.app_private_key = None
+        self.return_url = return_url
+        with open(self.app_private_key_path) as fp:
+            self.app_private_key = RSA.importKey(fp.read())
+        
+        self.alipay_public_key_path = alipay_public_key_path
+        with open(self.alipay_public_key_path) as fp:
+            self.alipay_public_key = RSA.import_key(fp.read())
+        
+        if debug is True:
+            self.__gateway = "https://openapi.alipaydev.com/gateway.do"
+        else:
+            self.__gateway = "https://openapi.alipay.com/gateway.do"
+    
+    def direct_pay(self, subject, out_trade_no, total_amount, return_url=None, **kwargs):
+        biz_content = {
+            "subject"     : subject,
+            "out_trade_no": out_trade_no,
+            "total_amount": total_amount,
+            "product_code": "FAST_INSTANT_TRADE_PAY",
+            # "qr_pay_mode":4
+        }
+        
+        biz_content.update(kwargs)
+        data = self.build_body("alipay.trade.page.pay", biz_content, self.return_url)
+        return self.sign_data(data)
+    
+    def build_body(self, method, biz_content, return_url=None):
+        data = {
+            "app_id"     : self.appid,
+            "method"     : method,
+            "charset"    : "utf-8",
+            "sign_type"  : "RSA2",
+            "timestamp"  : datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+            "version"    : "1.0",
+            "biz_content": biz_content
+        }
+        
+        if return_url is not None:
+            data["notify_url"] = self.app_notify_url
+            data["return_url"] = self.return_url
+        
+        return data
+    
+    def sign_data(self, data):
+        data.pop("sign", None)
+        # 排序后的字符串
+        unsigned_items = self.ordered_data(data)
+        unsigned_string = "&".join("{0}={1}".format(k, v) for k, v in unsigned_items)
+        sign = self.sign(unsigned_string.encode("utf-8"))
+        ordered_items = self.ordered_data(data)
+        quoted_string = "&".join("{0}={1}".format(k, quote_plus(v)) for k, v in ordered_items)
+        
+        # 获得最终的订单信息字符串
+        signed_string = quoted_string + "&sign=" + quote_plus(sign)
+        return signed_string
+    
+    def ordered_data(self, data):
+        complex_keys = []
+        for key, value in data.items():
+            if isinstance(value, dict):
+                complex_keys.append(key)
+        
+        # 将字典类型的数据dump出来
+        for key in complex_keys:
+            data[key] = json.dumps(data[key], separators=(',', ':'))
+        
+        return sorted([(k, v) for k, v in data.items()])
+    
+    def sign(self, unsigned_string):
+        # 开始计算签名
+        key = self.app_private_key
+        signer = PKCS1_v1_5.new(key)
+        signature = signer.sign(SHA256.new(unsigned_string))
+        # base64 编码，转换为unicode表示并移除回车
+        sign = encodebytes(signature).decode("utf8").replace("\n", "")
+        return sign
+    
+    def _verify(self, raw_content, signature):
+        # 开始计算签名
+        key = self.alipay_public_key
+        signer = PKCS1_v1_5.new(key)
+        digest = SHA256.new()
+        digest.update(raw_content.encode("utf8"))
+        if signer.verify(digest, decodebytes(signature.encode("utf8"))):
+            return True
+        return False
+    
+    def verify(self, data, signature):
+        if "sign_type" in data:
+            sign_type = data.pop("sign_type")
+        # 排序后的字符串
+        unsigned_items = self.ordered_data(data)
+        message = "&".join(u"{}={}".format(k, v) for k, v in unsigned_items)
+        return self._verify(message, signature)
 
 
 if __name__ == '__main__':
-    """
-    设置配置，包括支付宝网关地址、app_id、应用私钥、支付宝公钥等，其他配置值可以查看AlipayClientConfig的定义。
-    """
-    alipay_client_config = AlipayClientConfig(sandbox_debug = True)
-    alipay_client_config.server_url = 'https://openapi.alipaydev.com/gateway.do'
-    alipay_client_config.app_id = '2016101100658978'
-    alipay_client_config.app_private_key ='MIIEpAIBAAKCAQEAwop/Z7k+32Hs8E7nFgYdvr8ScKatcP1i8YOl/BCyCumNjQeyvmfYr71Bd9PMwHC78ACVAz4R0JFmY+/uAfALba7vPrxBM+YJZH4INoKSOrADBEzZbRD0O7YbG7oqgDmg1Tq/dMxYBPq4eRkXBOZ6SvNECxaHwlSgj88iyM0H6OQmbTmu6VlBjHHpGf8HjKgSNk55Y9q0dhHHyvdttvhsoeMpXJ61X0Jjpi6FN/OTb7vGA4Sa6eA1TU+lpOWTR97j98pcAGzSfV6it+Aty7/Ogebsx9+FhkSHrcoKG7WG3OutUTBtsqSvqvUzvc9YjtlreqM6hRBPTevsjFCQYsYJ4wIDAQABAoIBAADFk+PRdFJmjQ4XAguwUoXjNCuGPcHo/2992ja5yjsI2irpEOh4eP+ZfJ0BFhrdV6GIHw84O9HcAc/7r7IKRcFVpFVXYdrW2sqvRVESC4p4EEsAEwy/uHhULJ9bibeggubVqNTJyr+aTwkL9G9siqepd2ej2z4GH+zyIW0ygwmFfGwuCtpyUrkkRd0MSdm+7yOiV9I4+xoD0cY4785HxuxW8Udk0FQVBdfZwtCs0Xc2DkHBh6ANtyMnZh2vPIWmk9NoeVQmagr6Ue7Rt+7SEaK/pF5Zl0O3t49wCDoeEMD8mNcZ9EPZTAR1cV0M9bHB9auayTLxIuV+Pc6H0G6ViMECgYEA4sIbl+eZs1vD2T1B58hrfwaPAttcBSzha7DASJpsI3zYVrRrjxL0IXkmP4H3WGU6W+/OKGN98zjc3KbjrvPppmW+qAJPykWUO8uyQxtYtEhXdylgCuN6cpNJUYeQZ+tmXAx1OukHCP47PPN9cs7ysLeO/rAJpCxJVliIKObRGfkCgYEA26DQRclzkqfSfNaudGjhHnE+B7MHOh7tnQu7DkBnp42LMtF2YH4s2up33OmL2IzyLy998u9m/kUmtDuw8zVWP43P5pQHLjtfKrlSl3Na1ndRUDYrLoRI0vtle2KgUxOjBrwSd+eV5+Zdlc/oy3F5BA1152xToKpcYj4AkHIk2bsCgYB0qvg1fOS4wnMOt5TMI3MjZQV5q9E5nHDSzprv//u5eod4fNWGRHM1Mbb7H+xaH6MaIFTKtP3dgRkpsfgdUMObaGfi22WgJZJx/YjXPB+0ii/uUGxozcd3Yc5sUzp6LUR6AbLjP3fuKZfi8UhPJKj7QUYiRgJ/5IVLFrvfh3p4SQKBgQDOzZgPfmdS+q9aWZOfjXocfikYet0dPy4iqH8UJlT0EnW1/kHnDigSYqFG5KqH1//bqm6AKCjk2Bxfra0q9VgnM9NFnLE+OS2dPy+j6DzqoSNx0e/LN0iTUaD3E6E/WMgzeTgyq2AeIm6QuFrN5iU7SalxpjEAoimnYBaL7M8CLQKBgQDJy1DlGoqBZ4Ic8nng8HGZs593zuA4J2EK+r39q5ZgqwbNtYWDoCxyZqStcQm7784ENcrYgn8C4pbRK2YFiKoq30JiUybnvJHd8L8+40KgD3Y/SY/8D208wUwGppJFvLdotEIKD/rqYaos/gS9RLJkycQoKgieocDyCjo9+hv9Qg=='
-    alipay_client_config.alipay_public_key = ' MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwop/Z7k+32Hs8E7nFgYdvr8ScKatcP1i8YOl/BCyCumNjQeyvmfYr71Bd9PMwHC78ACVAz4R0JFmY+/uAfALba7vPrxBM+YJZH4INoKSOrADBEzZbRD0O7YbG7oqgDmg1Tq/dMxYBPq4eRkXBOZ6SvNECxaHwlSgj88iyM0H6OQmbTmu6VlBjHHpGf8HjKgSNk55Y9q0dhHHyvdttvhsoeMpXJ61X0Jjpi6FN/OTb7vGA4Sa6eA1TU+lpOWTR97j98pcAGzSfV6it+Aty7/Ogebsx9+FhkSHrcoKG7WG3OutUTBtsqSvqvUzvc9YjtlreqM6hRBPTevsjFCQYsYJ4wIDAQAB    '
-    client = DefaultAlipayClient(alipay_client_config=alipay_client_config, logger=logger)
-    model = AlipayTradePagePayModel()
-    import time
-    model.out_trade_no = "pay" + str(time.time())
-    model.total_amount = 100
-    model.subject = "测试"
-    model.body = "支付宝测试"
-    model.product_code = "FAST_INSTANT_TRADE_PAY"
-    request = AlipayTradePagePayRequest(biz_model=model)
-    response = client.page_execute(request, http_method="GET")
-    print("alipay.trade.page.pay response:" + response)
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
-
- 
- 
- 
- 
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
-
-    """
-    页面接口示例：alipay.trade.page.pay
-    """
-    # 对照接口文档，构造请求对象
-    model = AlipayTradePagePayModel()
-    model.out_trade_no = "pay201805020000226"
-    model.total_amount = 50
-    model.subject = "测试"
-    model.body = "支付宝测试"
-    model.product_code = "FAST_INSTANT_TRADE_PAY"
-    settle_detail_info = SettleDetailInfo()
-    settle_detail_info.amount = 50
-    settle_detail_info.trans_in_type = "userId"
-    settle_detail_info.trans_in = "2088302300165604"
-    settle_detail_infos = list()
-    settle_detail_infos.append(settle_detail_info)
-    settle_info = SettleInfo()
-    settle_info.settle_detail_infos = settle_detail_infos
-    model.settle_info = settle_info
-    sub_merchant = SubMerchant()
-    sub_merchant.merchant_id = "2088301300153242"
-    model.sub_merchant = sub_merchant
-    request = AlipayTradePagePayRequest(biz_model=model)
-    # 得到构造的请求，如果http_method是GET，则是一个带完成请求参数的url，如果http_method是POST，则是一段HTML表单片段
-    response = client.page_execute(request, http_method="GET")
-    print("alipay.trade.page.pay response:" + response)
-
-
-    """
-    构造唤起支付宝客户端支付时传递的请求串示例：alipay.trade.app.pay
-    """
-    model = AlipayTradeAppPayModel()
-    model.timeout_express = "90m"
-    model.total_amount = "9.00"
-    model.seller_id = "2088301194649043"
-    model.product_code = "QUICK_MSECURITY_PAY"
-    model.body = "Iphone6 16G"
-    model.subject = "iphone"
-    model.out_trade_no = "201800000001201"
-    request = AlipayTradeAppPayRequest(biz_model=model)
-    response = client.sdk_execute(request)
-    print("alipay.trade.app.pay response:" + response)
-    
-    
-
-'MIIEpAIBAAKCAQEAwop/Z7k+32Hs8E7nFgYdvr8ScKatcP1i8YOl/BCyCumNjQeyvmfYr71Bd9PMwHC78ACVAz4R0JFmY+/uAfALba7vPrxBM+YJZH4INoKSOrADBEzZbRD0O7YbG7oqgDmg1Tq/dMxYBPq4eRkXBOZ6SvNECxaHwlSgj88iyM0H6OQmbTmu6VlBjHHpGf8HjKgSNk55Y9q0dhHHyvdttvhsoeMpXJ61X0Jjpi6FN/OTb7vGA4Sa6eA1TU+lpOWTR97j98pcAGzSfV6it+Aty7/Ogebsx9+FhkSHrcoKG7WG3OutUTBtsqSvqvUzvc9YjtlreqM6hRBPTevsjFCQYsYJ4wIDAQABAoIBAADFk+PRdFJmjQ4XAguwUoXjNCuGPcHo/2992ja5yjsI2irpEOh4eP+ZfJ0BFhrdV6GIHw84O9HcAc/7r7IKRcFVpFVXYdrW2sqvRVESC4p4EEsAEwy/uHhULJ9bibeggubVqNTJyr+aTwkL9G9siqepd2ej2z4GH+zyIW0ygwmFfGwuCtpyUrkkRd0MSdm+7yOiV9I4+xoD0cY4785HxuxW8Udk0FQVBdfZwtCs0Xc2DkHBh6ANtyMnZh2vPIWmk9NoeVQmagr6Ue7Rt+7SEaK/pF5Zl0O3t49wCDoeEMD8mNcZ9EPZTAR1cV0M9bHB9auayTLxIuV+Pc6H0G6ViMECgYEA4sIbl+eZs1vD2T1B58hrfwaPAttcBSzha7DASJpsI3zYVrRrjxL0IXkmP4H3WGU6W+/OKGN98zjc3KbjrvPppmW+qAJPykWUO8uyQxtYtEhXdylgCuN6cpNJUYeQZ+tmXAx1OukHCP47PPN9cs7ysLeO/rAJpCxJVliIKObRGfkCgYEA26DQRclzkqfSfNaudGjhHnE+B7MHOh7tnQu7DkBnp42LMtF2YH4s2up33OmL2IzyLy998u9m/kUmtDuw8zVWP43P5pQHLjtfKrlSl3Na1ndRUDYrLoRI0vtle2KgUxOjBrwSd+eV5+Zdlc/oy3F5BA1152xToKpcYj4AkHIk2bsCgYB0qvg1fOS4wnMOt5TMI3MjZQV5q9E5nHDSzprv//u5eod4fNWGRHM1Mbb7H+xaH6MaIFTKtP3dgRkpsfgdUMObaGfi22WgJZJx/YjXPB+0ii/uUGxozcd3Yc5sUzp6LUR6AbLjP3fuKZfi8UhPJKj7QUYiRgJ/5IVLFrvfh3p4SQKBgQDOzZgPfmdS+q9aWZOfjXocfikYet0dPy4iqH8UJlT0EnW1/kHnDigSYqFG5KqH1//bqm6AKCjk2Bxfra0q9VgnM9NFnLE+OS2dPy+j6DzqoSNx0e/LN0iTUaD3E6E/WMgzeTgyq2AeIm6QuFrN5iU7SalxpjEAoimnYBaL7M8CLQKBgQDJy1DlGoqBZ4Ic8nng8HGZs593zuA4J2EK+r39q5ZgqwbNtYWDoCxyZqStcQm7784ENcrYgn8C4pbRK2YFiKoq30JiUybnvJHd8L8+40KgD3Y/SY/8D208wUwGppJFvLdotEIKD/rqYaos/gS9RLJkycQoKgieocDyCjo9+hv9Qg=='
-
-' MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAwop/Z7k+32Hs8E7nFgYdvr8ScKatcP1i8YOl/BCyCumNjQeyvmfYr71Bd9PMwHC78ACVAz4R0JFmY+/uAfALba7vPrxBM+YJZH4INoKSOrADBEzZbRD0O7YbG7oqgDmg1Tq/dMxYBPq4eRkXBOZ6SvNECxaHwlSgj88iyM0H6OQmbTmu6VlBjHHpGf8HjKgSNk55Y9q0dhHHyvdttvhsoeMpXJ61X0Jjpi6FN/OTb7vGA4Sa6eA1TU+lpOWTR97j98pcAGzSfV6it+Aty7/Ogebsx9+FhkSHrcoKG7WG3OutUTBtsqSvqvUzvc9YjtlreqM6hRBPTevsjFCQYsYJ4wIDAQAB    '
+    alipay = AliPay(
+        appid="2016101100658978",  # 设置签约的appid
+        app_notify_url="http://yangyangzijun.51vip.biz:21154/",  # 异步支付通知url
+        app_private_key_path=u"应用私钥2048.txt",  # 设置应用私钥
+        alipay_public_key_path="新建文本文档.txt",  # 支付宝的公钥，验证支付宝回传消息使用，不是你自己的公钥,
+        debug=True,  # 默认False,                                   # 设置是否是沙箱环境，True是沙箱环境
+        return_url="http://127.0.0.1:5000/"  # 同步支付通知url
+    )
+    
+    # 传递参数执行支付类里的direct_pay方法，返回签名后的支付参数，
+    url = alipay.direct_pay(
+        subject="测试订单",  # 订单名称
+        # 订单号生成，一般是当前时间(精确到秒)+用户ID+随机数
+        
+        out_trade_no=str(time.time())[0:10],  # 订单号
+        total_amount=100,  # 支付金额
+        return_url="http://127.0.0.1:5000/"  # 支付成功后，跳转url
+    )
+    print(url)
+    
+    # 将前面后的支付参数，拼接到支付网关
+    # 注意：下面支付网关是沙箱环境，
+    re_url = "https://openapi.alipaydev.com/gateway.do?{data}".format(data=url)
+    print(re_url)
+    # 最终进行签名后组合成支付宝的url请求w
