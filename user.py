@@ -1,4 +1,6 @@
 import pymysql
+from flask import session
+
 db = pymysql.connect(
     host='192.168.43.68',
     port=3306,
@@ -7,6 +9,16 @@ db = pymysql.connect(
     db='web_db',
     charset='utf8'
 )
+
+
+def op_sql(s):
+    cursor = db.cursor()
+    print(s)
+    cursor.execute(s)
+    
+    cursor.close()
+    db.commit()
+    return cursor.fetchall()
 def cal_sub(s):
     print(s[0:-1])
     
@@ -57,13 +69,11 @@ class User:
        
         try:
             cursor = db.cursor()
-            cursor.execute(f"select password from user where username ='{self.username}'")
+            cursor.execute(f"select password,user_id from user where username ='{self.username}'")
             data = cursor.fetchall()
             cursor.close()
-           
-            print(data)
-            
             if self.passwd == str(data[0][0]):
+                session['user_id']  = data[0][1]
                 return 1
             else:
                 return 0
@@ -74,7 +84,7 @@ class User:
         try:
             
             cursor = db.cursor()
-            cursor.execute(f"insert into user values (NULL,'{self.username}','{self.passwd}','{self.sex}')")
+            cursor.execute(f"insert into user (username,password,sex) values ('{self.username}','{self.passwd}','{self.sex}')")
             db.commit()
             cursor.close()
             return 1
@@ -116,11 +126,14 @@ class Goods:
         try:
             cursor = db.cursor()
             cursor.execute(f"insert into goods values (NULL,'{self.goods_name}',{self.goods_nums},{self.price},'{self.type}','{ self.photo}')")
+            cursor.execute(f"select goods_id from goods where goods_name = '{self.goods_name}'")
             db.commit()
+            data=cursor.fetchall()
             cursor.close()
-            return 1
+            return data[0][0]
         except:
             return 0
+
 
     def del_sql(self):
         try:

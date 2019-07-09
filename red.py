@@ -124,10 +124,10 @@ class AliPay(object):
         return self._verify(message, signature)
 
 
-def buy(price):
+def buy(price,id):
     alipay = AliPay(
         appid="2016101100658978",  # 设置签约的appid
-        app_notify_url="http://yangyangzijun.51vip.biz:21154/",  # 异步支付通知url
+        app_notify_url="http://yangyangzijun.51vip.biz:21154/js_test",  # 异步支付通知url
         app_private_key_path=u"应用私钥2048.txt",  # 设置应用私钥
         alipay_public_key_path="新建文本文档.txt",  # 支付宝的公钥，验证支付宝回传消息使用，不是你自己的公钥,
         debug=True,  # 默认False,                                   # 设置是否是沙箱环境，True是沙箱环境
@@ -139,14 +139,56 @@ def buy(price):
         subject="测试订单",  # 订单名称
         # 订单号生成，一般是当前时间(精确到秒)+用户ID+随机数
         
-        out_trade_no=str(time.time())[0:10],  # 订单号
+        out_trade_no=id,  # 订单号
         total_amount=price,  # 支付金额
         return_url="http://127.0.0.1:5000/"  # 支付成功后，跳转url
     )
-    print(url)
+
     
     # 将前面后的支付参数，拼接到支付网关
     # 注意：下面支付网关是沙箱环境，
     re_url = "https://openapi.alipaydev.com/gateway.do?{data}".format(data=url)
     return re_url
     # 最终进行签名后组合成支付宝的url请求w
+
+
+def check(d):
+    """支付宝支付成功后通知接口验证"""
+    
+    # 接收支付宝支付成功后，向我们设置的同步支付通知url，请求的参数
+    
+    # 将同步支付通知url,传到urlparse
+    
+    # 获取到URL的各种参数
+    
+    # 定义一个字典来存放，循环获取到的URL参数
+    processed_query = {}
+    # 将URL参数里的sign字段拿出来
+    
+    # 传递参数初始化支付类
+    alipay = AliPay(
+        appid="2016101100658978",  # 设置签约的appid
+        app_notify_url="http://yangyangzijun.51vip.biz:21154/js_test",  # 异步支付通知url
+        app_private_key_path=u"应用私钥2048.txt",  # 设置应用私钥
+        alipay_public_key_path="新建文本文档.txt",  # 支付宝的公钥，验证支付宝回传消息使用，不是你自己的公钥,
+        debug=True,  # 默认False,                                   # 设置是否是沙箱环境，True是沙箱环境
+        return_url="http://127.0.0.1:5000/"  # 同步支付通知url
+    )
+
+    # 循环出URL里的参数
+
+    
+    tt=d
+    l = tt["sign"]
+    tt.pop("sign")
+    print(alipay.verify(tt, l))
+    try:
+        if alipay.verify(tt, l) is True and tt['trade_status'] == 'TRADE_SUCCESS':
+            return 1
+        else:
+            return 0
+    except:
+        return 0
+
+   
+

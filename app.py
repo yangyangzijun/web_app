@@ -1,17 +1,11 @@
 from werkzeug.utils import secure_filename
 from flask import Flask, session,render_template, jsonify, request,redirect,escape,url_for
-import time
 import os
-import base64
-import psutil, time,json
-import pymysql
-import json
-from redis import StrictRedis
 from user import *
 from red import *
 
-
-redis = StrictRedis(host='127.0.0.1', port=6379, db=0, password='')
+import redis
+re = redis.Redis(host='192.168.43.68', port=6379)
 
 from flask_cors import *
 
@@ -23,29 +17,71 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 basedir = os.path.abspath(os.path.dirname(__file__))
 ALLOWED_EXTENSIONS = set(['txt', 'png', 'jpg', 'xls', 'JPG', 'PNG', 'xlsx', 'gif', 'GIF'])
 
+@app.route('/mulp', methods=['GET', 'POST'])
+def  mulp():
+    return  render_template('index.html')
+@app.route('/pingjia', methods=['GET', 'POST'])
+def  get_mess_with_pingjia():
+    request_data = json.loads(request.data.decode('utf-8'))
+    try:
+        data = op_sql(
+            f"select evalute,star_class  from checked_orders  where order_id  = {request_data['order_id']}")
+        return jsonify({"mess": "ok", "data": data[0][0],"star_class":data[0][1]})
+    except:
+        return jsonify({"mess": "error", })
+    pass
+@app.route('/evaluate', methods=['GET', 'POST'])
+def evaluate():
+    if request.method == "POST":
+        if 'username' in session:
+            request_data = json.loads(request.data.decode('utf-8'))
+            try:
+                op_sql(f"update checked_orders set evalute='{request_data['content']}',star_class ='{request_data['xingji']}',received = 2 where order_id= '{request_data['order_id']}'")
+            except:
+                print("添加出错")
+            return jsonify({'mess': 'ok'})
+        else:
+            return jsonify({'mess': '请先登录'})
+
+@app.route('/checked_orders',methods=['POST','GET'])
+def checked_orders():
+    if request.method=="GET":
+        return render_template('checked_orders.html')
+    else:
+        data = json.loads(request.data.decode('utf-8'))
+        data = data['order_id']
+        s = f"update  checked_orders set received =1 where order_id  = {data} "
+        try :
+            op_sql(s)
+            return  jsonify({"mess":"ok"})
+        except:
+            return  jsonify({"mess":"error"})
+
+            
+@app.route('/eva',methods=['POST','GET'])
+def eva():
+    return jsonify({'s':'s'})
+        
 @app.route('/pay',methods=['POST','GET'])
 def pay():
-    request_data = json.load(request.data.decode('utf-8'))
-
-    s = ""
-    for l in request_data:
-        s += str(l) + ','
-    #return  jsonify({'mess':cal_sub(s)})
-
-
-    li=[]
-    
-    s=""
-    for l in li:
-        s +=str(l)+','
-    print(s[:-1])
-    
-    
-    cursor = db.cursor()
-    cursor.execute(f"select sum(price*num) from orders,goods where goods.goods_id = orders.goods_id and orders.order_id in ({ s[:-1]})")
-    data = cursor.fetchall()
-    
-    return jsonify({'mess':buy(cal_sub(s))})
+    if "user_id" in session:
+        a=session["user_id"]
+        data = op_sql(f"select checked_orders.order_id,goods.main_pic_addr,goods"
+                     f".goods_name,goods.price,checked_orders.num,checked_orders.received from checked_orders,"
+                     f"user,goods where  user.user_id=checked_orders.user_id and checked_"
+                     f"orders.goods_id=goods.goods_id  and user.user_id='{a }'")
+        li = []
+        for l in data:
+            res = {'orders_id': l[0], 'main_pic_addr': 'static/' + l[1], 'goods_name': l[2], 'goods_price': l[3],
+                   'order_num': l[4],'received':l[5]}
+            li.append(res)
+        result = {}
+        result['data'] = li
+        result['mess'] = 'ok'
+        return jsonify(result)
+        
+    else:
+        pass
 @app.route('/cal_sub', methods=['POST', 'GET'])
 def cal_su():
     if request.method=="GET":
@@ -57,9 +93,11 @@ def cal_su():
         for l in  data:
             
             s +=str(l)+','
-        
-   
-        return jsonify({"mess": buy(int(cal_sub(s)))})
+        id = str(time.time() * 1000000)[0:-2]
+        print(id)
+
+        re.set(id,s[0:-1],600)
+        return jsonify({"mess": buy(int(cal_sub(s)),id)})
       
       
       
@@ -180,8 +218,6 @@ def add_goods_photo():
         return jsonify({"errno": 1001, "errmsg": "上传失败"})
 
 
-
-
 @app.route('/add_goods',methods=['GET','POST'])
 def add_goods():
     if request.method=="GET":
@@ -195,6 +231,12 @@ def add_goods():
         goods_nums = int(request.form['goods_nums'])
         goods_price = int(request.form['goods_price'])
         goods_type = request.form['goods_type']
+        pic_list = []
+        pic_num = int(request.form['length'])
+        for l in range(0,pic_num):
+            pic_list.append(request.files[str(l)])
+        
+        #main_pic_addr = request.form['myfile'].filename
         try:
             if f and allowed_file(f.filename):  # 判断是否是允许上传的文件类型
                 fname = secure_filename(f.filename)
@@ -202,22 +244,32 @@ def add_goods():
                 unix_time = int(time.time())
                 new_filename = str(unix_time) + '.' + ext  # 修改了上传的文件名
                 f.save(os.path.join(file_dir, new_filename))  # 保存文件到upload目录
-                
                 goods = Goods(goods_name, goods_nums, goods_price, goods_type, new_filename)
-
-                if goods.add_sql() == 0:
+                flag = goods.add_sql()
+                print(flag)
+                if flag==0:
                     return jsonify({'mess': 'error'})
                 else:
-                    return jsonify({'mess': 'ok'})
-        
-                
+                    print((pic_list[0].filename))
+                    try:
+                        
+                        for l in pic_list:
+                            
+                            fname = secure_filename(l.filename)
+                            ext = fname.rsplit('.', 1)[1]  # 获取文件后缀
+                            unix_time = int(time.time()*100000)
+                            new_filename = str(unix_time) + '.' + ext  # 修改了上传的文件名
+                            f.save(os.path.join(file_dir, new_filename))  # 保存文件到upload目录
+                            op_sql(f"insert into pics(goods_id,pic_addr) value ('{flag}','{new_filename}')")
+                        return jsonify({'mess': 'ok'})
+                    except:
+                        return  jsonify({'mess':'次要图片上传错误'})
             else:
                 return jsonify({"errno": 1001, "errmsg": "上传失败"})
         except:
             return jsonify({"errno": 1001, "errmsg": "文件类型错误"})
-            
 
-        
+
     
     
 @app.route('/del_goods',methods=['GET','POST'])
@@ -258,8 +310,10 @@ def login():
         
         if u.test_password() == 1:
             session['username'] = u.username
+            
             return jsonify({'mess':'ok'})
         elif u.test_password()==-1:
+            print(session["user_id"])
             return jsonify({'mess':'error'})
         else:
             return jsonify({'mess':'密码错误'})
@@ -284,11 +338,10 @@ def regeist():
         sex = request_data['sex']
         u = User(username,password,sex)
         
-        if redis.hget('user', username) is not None:
-            return jsonify({'mess':'用户名已存在'})
         if u.regist()==0:
-            return jsonify({'mess': 'error'})
+            return jsonify({'mess': '用户名已存在'})
         else:
+           
             return jsonify({'mess':'ok'})
       
             
@@ -309,11 +362,29 @@ def admin():
 def po():
     return "pl"
 @app.route('/js_test',methods=['POST',"GET"])
-@cross_origin()
 def js_test():
+    data  = request.form
+    d = {}
+    for l in data:
+        d[str(l)]=data[str(l)]
+  
+    check(d)
+    print(d["out_trade_no"])
+    s = re.get(d["out_trade_no"]).decode('utf-8')
+   
+    try :
+        a=f'insert into checked_orders  (user_id,goods_id,num)  (select user_id,goods_id,num from orders where order_id in ({ s } ))'
+        op_sql(  a)
+        b=f'delete from orders where order_id in ({ s }) '
+        op_sql(b)
+        print('ok')
+    except:
+        print('error')
+    
+    
     
 
-    return render_template('error.html')
+    return "success"
 if __name__ == '__main__':
     app.run(host='0.0.0.0',port=5000,debug=True)
    

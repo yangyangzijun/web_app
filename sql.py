@@ -150,7 +150,7 @@ if __name__ == '__main__':
         subject="测试订单",  # 订单名称
         # 订单号生成，一般是当前时间(精确到秒)+用户ID+随机数
         
-        out_trade_no=str(time.time())[0:10],  # 订单号
+        out_trade_no=str(time.time()*100000000000),  # 订单号
         total_amount=100,  # 支付金额
         return_url="http://127.0.0.1:5000/"  # 支付成功后，跳转url
     )
