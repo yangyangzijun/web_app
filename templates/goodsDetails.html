@@ -1,0 +1,248 @@
+	<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>物品详情页</title>
+	<link rel="stylesheet" type="text/css" href="/static/css/base.css">
+	<link rel="stylesheet" type="text/css" href="/static/css/nav.css">
+	<link rel="stylesheet" type="text/css" href="/static/css/footer.css">
+	<link rel="stylesheet" type="text/css" href="/static/css/fixedMenu.css">
+	<link rel="stylesheet" type="text/css" href="/static/css/goodsDetails.css">
+
+	<script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.0.js"> </script>
+
+</head>
+<body>
+	<header id="header" class="t">
+		<nav id="navTop" class="t">
+				<div id="navTopC" class="c">
+					<ul id="navTopLeft" class="l">
+						<li class="topLinks" id="indexPage"><a href="home.html">首页</a></li>
+					</ul>
+
+					<ul id="navTopRight" class="r">
+						<li id="login" class="topLinks"><a  href="login.html">请登录</a></li>
+						<li id="register" class="topLinks"><a href="registe.html">注册</a></li>
+						<li class="topLinks"><a href="">已成交订单</a></li>
+						<li id="buyCarBox" class="topLinks">
+							<a href="" id="buyCarLink">
+								购物车(0)
+							</a>
+							<p class="mySecondMemu myBuyCar">
+								<!--img src="/static/img/index/byCar.png" alt=""-->
+							</p>
+						</li>
+					</ul>
+				</div>
+		</nav>
+		<!-- ><nav id="navBottom" class="t">
+			<div id="navBottomC" class="c">
+				<section id="search">
+						<input type="text" id="searchBox" value="serch" >
+						<a href="" title=""><i id="searchBtn"></i></a>
+					</section>
+			</div-->
+			<!-- 二级菜单 >
+		</nav><-->
+	</header><!-- /header -->
+	
+	<main id="main" class="t">
+		<section id="mainNav" class="c">
+
+		</section>
+		
+		<section id="goodDetailsTop" class="c">
+			<div id="goodsPhoto">
+				<div id="originalPicBox">
+                    <div id="square"> </div>
+				</div>
+
+				<div id="zoomToolBox">
+
+				</div>
+
+				<div id="smallPicList">
+					<div class="moveBtn" id="before"></div>
+					<div  class="moveBtn" id="next"></div>
+					
+					<div id="zoomToolbtnsFBox">
+
+					</div>
+				</div>
+			</div>
+
+			<div id="goodsInf" >
+				<h1 id="goodsName" >物品名</h1>
+				<div id="goodsAtivities">
+					<p>
+						<span class="buyingPrice goodsAtivitiesInf">价格 ￥</span>
+						<span class="detailsPrice">1399.00</span>
+						<!--s class="originalPrice goodsAtivitiesInf">¥ 1499</s-->
+					</p>
+				</div>
+				<p id="goodsId">
+					<span class="goodsInfTitle goodsAtivitiesInf">商品编码</span>
+					<span class="explain">
+								2701010009501
+					</span>
+				</p>
+				<div id="buyBtn">
+
+					</p>
+					<a class="buyBtns" id="addBuycar"  ><span>加入购物车</span></a>
+
+				</div>
+			</div>
+			<div id="cornerIconBox">
+				<i class="cornerIcon"></i>
+				<i class="cornerIcon"></i>
+			</div>
+		</section>
+
+		<section id="goodDetailsBottom" class="t">
+			<div id="bottomNavBox" class="t">
+				<div id="bottomNav" class="t">
+					<ul id="bottomNavMid" class="c">
+						<li class="bottomNavLink"><a href="#userComment" title="">用户评价</a></li>
+						<li id="addBuycarBtn">加入购物车</li>
+					</ul>
+				</div>		
+			</div>
+		</section>
+	</main>
+
+	<section id="fixedMune" class="t">
+		<a id="goTop" class="fixedMuneLinks" href="#" title="">
+			<i class="fixedMuneTips">返回顶部</i>
+		</a>
+        <a  class="goods_id" id="{{ data}}">{{ data }}</a>
+	</section>
+</body>
+     <div id='inputbox' class="box" style="display: none;">
+
+         <div id="pinja" style="text-align: center;height: 20px;">
+             <textarea id="ttt" style="margin-left:10px ;margin-right: 10px"></textarea>
+         </div>
+         <div style="margin-top: 250px">
+             <a id="submit_pingjia">jn</a>
+         <a class='x'  onclick="msgbox(0); return false;">关闭</a>
+         </div>
+
+     </div>
+</html>
+    <style>
+        #inputbox {
+    text-align: center;
+    background-color: #fff;
+    border-radius: 20px;
+    width: 500px;
+    height: 350px;
+    margin: auto;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    position: fixed;
+}
+    </style>
+
+
+    <script>
+        function msgbox(n){
+
+            document.getElementById('inputbox').style.display=n?'block':'none';     /* 点击按钮打开/关闭 对话框 */
+        }
+        $("#addBuycar").live('click',function () {
+            submit_data={}
+            submit_data["goods_id"] =  data["goods_id"]
+              $.ajax({
+            url:"/create_order",
+            type:"post",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(submit_data),
+            dataType: "json",
+                  success:function(ko){ //后端返回的json数据（此处data为json对象）
+                    if(ko.mess="ok")
+                    {
+                        alert("dedf")
+                        $('textarea[id="ttt"]').val("商品已添加成功")
+                        msgbox(1)
+
+                    }
+
+          },
+            error:function(e){
+                alert("错误！！");
+            }
+        });
+        })
+        $(".zoomToolbtnPic").live('mousemove',function () {
+
+             var dfo ='<img src="'+$(this).attr("src").toString()+'"  > <div id="square"></div>';
+
+					document.getElementById("originalPicBox").innerHTML =  dfo;
+
+        })
+      function change() {
+alert($(this).html())
+      }
+      var data =  {};
+    data["goods_id"] = $(".goods_id").attr("id").toString();
+
+
+
+   $.ajax({
+            url:"/get_details",
+            type:"post",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(data),
+            dataType: "json",
+             success:function(data_1){ //后端返回的json数据（此处data为json对象）
+                data = data_1
+
+
+
+                 var ppp  = "tjtyjty"
+					for(var i=0;i<data_1.photo.length;i++)
+                    {
+                        ppp+='<li class="zoomToolbtns"> <a id="'+i+'"> <img class="zoomToolbtnPic" " src= "/'+data_1.photo[i]+'"> </a></li>';
+                    }
+                    $("#zoomToolbtnsFBox").replaceWith(ppp)
+                    var dfo ='<img src="/'+data_1.photo[0]+'"  > <div id="square"></div>';
+
+					document.getElementById("originalPicBox").innerHTML =  dfo;
+
+                   // document.getElementById("goodsAtivities").innerHTML
+                	document.getElementById("goodsName").innerHTML = data_1.goods_name;
+
+
+					var id='<span class="goodsInfTitle goodsAtivitiesInf">商品编码</span> <span class="explain">\n' + data_1.goods_id + '</span>';
+                    $(".explain").replaceWith('<span class="explain">\n' +
+                        '\t\t\t\t\t\t\t\t2'+data_1.goods_id+'\n' +
+                        '\t\t\t\t\t</span>')
+
+
+                 $(".detailsPrice").replaceWith('<span class="detailsPrice">'+data_1.price+'</span>')
+					//var pics=data.photo;
+					//var ppp='';
+					//ppp=ppp+'<ul id="zoomToolbtnsBox">';
+					/*for(var i = 0;i<pics.length;i++)
+					{
+						ppp+='<li class="zoomToolbtns"> <a id="'+i+'"> <img class="zoomToolbtnPic" onclick="change(this)" src= "/'+pics[i]+'" alt=""> </a></li>';
+					}
+					ppp+='</ul>';
+
+					document.getElementById("zoomToolbtnsFBox").innerHTML = ppp;
+
+
+					/*var dfz ='<img src="/'+pics[0]+'" alt="">'
+					document.getElementById("zoomToolBox").innerHTML = dfz;*/
+
+          },
+            error:function(e){
+                alert("错误！！");
+            }
+        });
+
+    </script>

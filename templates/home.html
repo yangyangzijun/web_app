@@ -1,122 +1,261 @@
-{% extends 'base.html' %}
+<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
 
-
-{% block footer %}
+<!DOCTYPE html>
 <html>
+<head>
+	<meta charset="UTF-8">
+	<script src="static/js/jquery-1.11.3.js" type="text/javascript" charset="utf-8"></script>
+	<script src="static/js/index_jquey.js" type="text/javascript" charset="utf-8"></script>
+	<script src="static/js/mian.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript" src="static/js/indexData.js"></script>
+	<script type="text/javascript" src="static/js/jquery.js"></script>
+	<script type="text/javascript" src="static/js/index.js"></script>
+
+	<link rel="stylesheet" type="text/css" href="static/css/main.css">
+	<link rel="stylesheet" type="text/css" href="static/css/reset.css">
+
+	<link rel="stylesheet" type="text/css" href="static/css/nav.css">
+	<link rel="stylesheet" type="text/css" href="static/css/fixedMenu.css">
+	<link rel="stylesheet" type="text/css" href="static/css/base.css">
+	<link rel="shortcut icon" href="static/img/index/favicon.ico">
+	<link rel="stylesheet" type="text/css" href="static/css/index_1.css">
+<!-- 	<link rel="stylesheet" type="text/css" href="static/css/footer.css"> -->
+
+
+	<title>想喝大可乐</title>
+</head>
 <body>
-<style type="text/css">
- .container .row{width: 1226px;height: 340px;}
-.container .row .col-xs-6 col-sm-3{width: 234px;height: 339px;background: rgb(250,250,250);}
-.container .row .col-xs-6 col-sm-3:nth-of-type(1){border-top: 1px solid orange;margin-right:14px;}
-.container .row .col-xs-6 col-sm-3:nth-of-type(2){border-top: 1px solid green;margin-right:14px;}
-.container .row .col-xs-6 col-sm-3:nth-of-type(3){border-top: 1px solid blue;margin-right:14px;}
-.container .row .col-xs-6 col-sm-3:nth-of-type(4){border-top: 1px solid red;margin-right:14px;}
-.container .row .col-xs-6 col-sm-3:nth-of-type(5){border-top: 1px solid teal;}
-.container .row .col-xs-6 col-sm-3 .sub_mingxing{padding: 37px;}
-.container .row .col-xs-6 col-sm-3 .sub_mingxing a img{display:block;width: 160px;height: 160px;opacity: 0.85}
-.container .row .col-xs-6 col-sm-3 .sub_mingxing a img:hover{width: 160px;height: 160px;opacity: 1;}
-.container .row .col-xs-6 col-sm-3 .pinpai{width: 234px;height: 14px;line-height: 14px;text-align: center;margin-top: -10px;}
-.container .row .col-xs-6 col-sm-3 .pinpai a{font-size: 14px;color:#333;}
-.container .row .col-xs-6 col-sm-3 .youhui{width: 234px;height: 12px;line-height: 12px;margin:15px 0;font-size: 12px;color: rgb(176,176,176);text-align: center;}
-.container .row .col-xs-6 col-sm-3 .jiage{font-size: 14px;text-align: center;color:#ff6709;}
+
+
+	<div id="gouwuchebox">
+		<p>这里什么都没有~</p>
+	</div>
+	<!-- navigation -->
+<!--标题栏  -->
+	<nav class="nav">
+			<div class="nav_black">
+					<ul class="nav_black_left">
+						<li><a href="https://www.coca-cola.com.cn/" target="_blank">大可乐</a></li>
+						<li>|</li>
+						<li><a href="">可乐</a></li>
+						<li>|</li>
+						<li><a href="">雪碧</a></li>
+						<li>|</li>
+						<li><a href="">脉动</a></li>
+						<li>|</li>
+						<li><a href="">尖叫</a></li>
+						<li>|</li>
+						<li><a href="">农夫山泉</a></li>
+						<li>|</li>
+						<li><a href="">陈泓钇</a></li>
+						<li>|</li>
+						<li><a href="">硫酸</a></li>
+						<li>|</li>
+						<li><a href="">问题反馈</a></li>
+						<li>|</li>
+						<li><a href="">Select Region</a></li>
+						<div class="clear"></div>
+					</ul>
+
+				<div class="nav_black_right">
+					<div class="fr" id="user_mess">
+						<ul>
+                            	<li><a href="/cal_sub" style="color: red">\__/***购物车（0）</a></li>
+							<li><a href="">消息通知</a></li>
+							<li>|</li>
+							<li><a  href="/regrist" role="button">注册</a></li>
+							<li>|</li>
+							<li><a  href="/login" >登录</a></li>
+						</ul>
+					</div>
+				</div>
 
 
 
-</style>
-<style type="text/css">
-img{display:block;width: 160px;height: 160px;opacity: 0.85;margin-top: 50px;}
-img:hover{width: 160px;height: 160px;opacity: 1;}
-div.pinpai{width: 234px;height: 14px;line-height: 14px;text-align: center;margin-top: 0px;}
-div.pinpai a{font-size: 14px;color:#333;}
-div.jiage{font-size: 14px;text-align: center;color:#ff6709;}
-div.youhui{width: 234px;height: 12px;line-height: 12px;margin:15px 0;font-size: 12px;color: rgb(176,176,176);text-align: center;}
-    p.name{color:red;
-    margin-left:90px;
-    font-style: italic;
-	margin-top: 0.5em;
-	line-height: 1.5;
-    }
-    p.price{color:pink;
-    margin-left:90px;
-    }
+			</div>
+	</nav>
+<!--标题栏结束-->
 
 
-</style>
-<style>
-    body .productColor .rightBox .colorDes{width:100%;} .vp-head .vp-head-wrap-pc .vp-head-logo a svg{height:auto !important}
+<!-- banner -->
+	<header id="header" class="t">
+			<nav id="navBottom" class="t">
+			<div id="navBottomC" class="c">
+				<section id="navBottomLeft">
+
+						<img id="indexLogo" src="static/img/index/logo.png" alt="">
+					</a>
+					<ul id="navBottomLinkBox">
+						<li id="phoneSelft" class="navBottomLinks">
+							<a href="#phone">手机</a>
+						</li>
+
+						<li class="navBottomLinks"><a href="#computre">笔记本&平板</a></li>
+
+						<li class="navBottomLinks"><a href="#peijian">配件</a></li>
+
+					</ul>
+				</section>
+            </div>
+            </nav>
+    </header>
 
 
-</style>
 
 
-<div class="container">
+<div class="phoneMenu phoneMenuCompt">
+								<ul class="phoneMenuBox">
+									<li class="phoneLinks"><a href="goodsDetails.html">
+										<img src="img/index/smallpart01.png" alt="">
+										<span>保护壳</span>
+									</a></li>
+									<li class="phoneLinks"><a href="">
+										<img src="img/index/smallpart02.png" alt="">
+										<span>电视盒子</span>
+									</a></li>
+									<li class="phoneLinks"><a href="">
+										<img src="img/index/smallpart03.png" alt="">
+										<span>照明</span>
+									</a></li>
+								</ul>
+
+								<ul class="phoneMenuBox">
+									<li class="phoneLinks"><a class="lookMoreBtn" href="goodsList.html">
+										查看全部
+									</a></li>
+								</ul>
+							</div>
 
 
-    <div class="row" id="list_goods">
+
+
+
+
+
+
+
+
+
+	<!-- 开始主体 -->
+
+
+<!-- 手机 -->
+    <div class="phoneAll" id="phone" style="overflow: hidden;">
+	   <div class="phoneTop">
+			<p id = "phone">手机</p>
+
+		</div>
+		<div class="phoneImg" id="list_goods_phone" style="overflow: auto">
+
+		</div>
+</div>
+	<div class="phoneAll" id="computre" style="overflow: hidden;">
+		<div class="phoneTop">
+			<p id = "phone">电脑</p>
+
+		</div><div class="phoneTop">
+			<p id = "phone"></p>
+
+		</div>
+		<div class="phoneImg" id="list_goods_computer"  style="overflow: auto">
+
+		</div>
+	</div>
+    <div class="phoneAll" id="peijian" style="overflow: hidden">
+
+			<div class="phoneTop">
+			<p id = "phone">配件</p>
+
+		</div><div class="phoneTop" >
+			<p id = "phone"></p>
+
+		</div>
+		<div class="phoneImg" id="list_goods_peijian"  style="overflow: auto">
+
+		</div>
+	</div>
+
+<!--电脑-->
+
 
 </div>
-</div>
-
-<div id="user_mess">
- <p class="lolo"> 787878789</p>
-    <a class="btn btn-primary " href="/regrist" role="button" style="position: absolute;right: 55px;top: 5px;">注册</a>
-    <a class="btn btn-primary" href="/login" role="button" style="position: absolute;right: 155px;top: 5px;">登录</a>
-</div>
 
 
+<!-- 商品3 -->
+
+
+
+
+<!-- 底部开始 -->
+	<footer id="footer" class="t">
+			<section id="slogan" class="c">
+				<ul id="sloganBox">
+					<li class="sloganInf"><a href="">
+						<i class="sloganIcon"></i>
+						<span class="sloganText">百强企业 品质保证</span>
+					</a></li>
+					<li class="sloganInf"><a href="">
+						<i class="sloganIcon"></i>
+						<span class="sloganText">7天退货品 15天换货</span>
+					</a></li>
+					<li class="sloganInf"><a href="">
+						<i class="sloganIcon"></i>
+						<span class="sloganText">48元起免运费</span>
+					</a></li>
+					<li class="sloganInf"><a href="">
+						<i class="sloganIcon"></i>
+						<span class="sloganText">1000家维修网点 全国联保</span>
+					</a></li>
+				</ul>
+			</section>
+
+
+
+
+		</footer>
+<!-- 底部结束 -->
 </body>
 </html>
-<script>
-$('.lolo').click(function () {
-    alert('ok');
-});
-        $.ajax({
-            url: "/check_login",
-            type: "get",
-            contentType: "application/json; charset=utf-8",
-
-            dataType: "json",
-            success: function (data) { //后端返回的json数据（此处data为json对象）
-                if (data.mess == 'ok') {
-                    var m = '<a class="btn btn-primary" href="/login" role="button" style="position: absolute;right: 155px;top: 5px;"> 欢迎' +
-                        data.username +'</a>'+'<a class="btn btn-primary" href="/logout" role="button" style="position: absolute;right: 90px;top: 5px;">注销</a>'+
-                        '<a class="btn btn-primary" href="/cal_sub" role="button" style="position: absolute;right: 10px;top: 5px;">购物车</a>';
-
-                     document.getElementById("user_mess").innerHTML = m;
-                }
-                else {
-
-                }
-
-            },
-            error: function (e) {
-                alert("错误！！");
-            }
-        });
+<script type="text/javascript">
 $.ajax({
             url:"/list_goods",
             type:"post",
-
-
             dataType: "json",
-             success:function(data){ //后端返回的json数据（此处data为json对象）
+             success:function(data){//后端返回的json数据（此处data为json对象）
                 if(data.mess=='ok')
                 {
                     for(var i=0;i<data.data.length;i++)
                     {
-                        var  p=' <div class="col-xs-6 col-sm-3">\n' +
-                            '            <div class="sub_mingxing">\n' +
-                            '                <img src="' + data.data[i].goods_photo +' "></div>\n' +
-                            '            <div class="pinpai"><a href="">'+data.data[i].goods_name+'</a></div>\n' +
-                            '            <div class="youhui">'+data.data[i].goods_type+'</div>\n' +
-                            '            <div class="jiage"  onclick="add()">'+data.data[i].goods_price+'' +'\'<a class="btn btn-primary "  id="' +data.data[i].goods_id+
-                            '" role="button" style="position: absolute;right: 15px; bottom: 0px;">购买</a>  <p class="lolo"> 787878789</p>\''+
-                            '</div>\n' +
-                            '        </div>';
-                         document.getElementById("list_goods").innerHTML += p;
+                        var  p=	'<li class="phoneRight">'+
+					'<div class ="phoneOne" >'+
+						'<div id = "xinpin">新品</div>'+
+						'<a class = "PhoneLittlePhone" href="get_details?goods_id='+data.data[i].goods_id+'">'+
+							'<img src="'+ data.data[i].goods_photo +'" alt="">'+ data.data[i].goods_name+
+						'</a>'+
+						'<p class="miaosu">'+ data.data[i].goods_type+'</p>'+
+						'<br>'+
+						'<p class ="price">'+ data.data[i].goods_price+'</p>'+
+					'</div>'+
+				'</li>'
+                         document.getElementById("list_goods_phone").innerHTML += p;
+                      if(data.data[i].goods_type == "手机")
+
+                        {
+                              document.getElementById("list_goods_phone").innerHTML += p;
+                        }
+                        else if(data.data[i].goods_type == "笔记本")
+                        {
+                            document.getElementById("list_goods_computer").innerHTML += p;
+
+                        }
+                        else
+                        {
+                            document.getElementById("list_goods_peijian").innerHTML += p;
+
+                        }
                     }
 
-                    document.getElementById("list_goods").innerHTML += s;
+
 
                 }
               else
@@ -126,11 +265,11 @@ $.ajax({
 
           },
             error:function(e){
-                alert("错误！！");
+                alert("错误");
             }
         });
 
-function add() {
+	function add() {
     var lo= {};
                  lo['goods_id']=event.target.getAttribute("id");
 
@@ -140,10 +279,8 @@ function add() {
         contentType: "application/json; charset=utf-8",
 
         dataType: "json",
-        success: function (data) { //后端返回的json数据（此处data为json对象）
+        success: function (data) {//后端返回的json数据（此处data为json对象）
             if (data.mess == 'ok') {
-
-
 
                  $.ajax({
                             url:"/create_order",
@@ -157,7 +294,7 @@ function add() {
                             }
             else
             {
-                alert("请登录！")
+                alert("请登录")
             }
                         }
                     });
@@ -165,9 +302,34 @@ function add() {
 
 }
 
+ $.ajax({
 
+ 			url: "/check_login",
+            type: "get",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+success: function (data) {
 
+if (data.mess == 'ok') {
+	var m = '<ul>'+
+             '<li><a href="/cal_sub" style="color: red">\\__/***购物车（0）</a></li>'+
+	'<li><a href="">消息通知</a></li>'+
+	'<li>|</li>'+
+	'<li>'+'<a href="/logout">注销</a>'+'</li>'+
+	'<li>|</li>'+
+	'<li><a  href="/login" >欢迎'+ data.username+'</a></li>'+
+
+	'</ul>';
+	document.getElementById("user_mess").innerHTML = m;
+}
+else{
+
+}
+
+}
+
+})
 </script>
 
-{% endblock %}
+
 

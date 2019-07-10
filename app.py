@@ -17,9 +17,9 @@ app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 basedir = os.path.abspath(os.path.dirname(__file__))
 ALLOWED_EXTENSIONS = set(['txt', 'png', 'jpg', 'xls', 'JPG', 'PNG', 'xlsx', 'gif', 'GIF'])
 
-@app.route('/mulp', methods=['GET', 'POST'])
+@app.route('/get_test', methods=['GET', 'POST'])
 def  mulp():
-    return  render_template('index.html')
+    return render_template('goodsDetails.html')
 @app.route('/pingjia', methods=['GET', 'POST'])
 def  get_mess_with_pingjia():
     request_data = json.loads(request.data.decode('utf-8'))
@@ -100,7 +100,24 @@ def cal_su():
         return jsonify({"mess": buy(int(cal_sub(s)),id)})
       
       
-      
+@app.route('/get_details',methods=['GET','POST'])
+def get_details():
+    if(request.method == 'GET'):
+        data = {}
+        data['data'] =  request.args.get("goods_id")
+        return render_template('goodsDetails.html',**data)
+    else:
+        data = json.loads(request.data.decode('utf-8'))
+        data1=op_sql(f"select * from goods where goods_id = '{data['goods_id']}'")
+        data2=op_sql(f"select pic_addr from pics where goods_id = '{data['goods_id']}'")
+        
+        res = {'goods_id': data1[0][0],'goods_name': data1[0][1] ,'price':data1[0][3],'type':data1[0][4]}
+        rr=[]
+        for l in data2:
+            rr.append('static/'+l[0])
+        res["photo"] = rr
+        print(res['photo'])
+        return jsonify(res)
     
     
 
@@ -173,7 +190,7 @@ def create_order():
             u=User(name=session['username'])
             request_data = json.loads(request.data.decode('utf-8'))
             u.create_order(request_data['goods_id'])
-            return 'ok'
+            return jsonify({"mess":"ok"})
         else:
             return jsonify({'mess':'请先登录'})
 
@@ -259,8 +276,9 @@ def add_goods():
                             ext = fname.rsplit('.', 1)[1]  # 获取文件后缀
                             unix_time = int(time.time()*100000)
                             new_filename = str(unix_time) + '.' + ext  # 修改了上传的文件名
-                            f.save(os.path.join(file_dir, new_filename))  # 保存文件到upload目录
-                            op_sql(f"insert into pics(goods_id,pic_addr) value ('{flag}','{new_filename}')")
+                            l.save(os.path.join(file_dir, new_filename))  # 保存文件到upload目录
+                            op_sql(f"insert into pics(goods_id,pic_addr) v"
+                                   f"alue ('{flag}','{new_filename}')")
                         return jsonify({'mess': 'ok'})
                     except:
                         return  jsonify({'mess':'次要图片上传错误'})
