@@ -1,84 +1,186 @@
-{% extends 'base.html' %}
-
-
-{% block footer %}
-<html>
+<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>注册</title>
+	<link rel="stylesheet" type="text/css" href="/static/css/base.css">
+	<link rel="stylesheet" type="text/css" href="/static/css/register.css">
+	<link rel="shortcut icon" href="/static/img/index/favicon.ico">
+	<script type="text/javascript" src="/static/js/jquery.js"></script>
+{#	<script type="text/javascript" src="/static/js/register.js"></script>#}
+</head>
 <body>
+	<header id="header" class="t">
+		<div id="headerC" class="c">
+			<img src="https://ss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/logo_top_86d58ae1.png" alt="">
+			<span>|</span>
+			<a href="./" title=""><span id="headerTitle">并夕夕商城</span></a>
+		</div>
+	</header><!-- /header -->
 
-<form id="regist_form">
-    <div class="containter">
-        <div class="row">
-            <div class="col-xs-4 col-xs-offset-4">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">注册</h3>
-                    </div>
+	<main id="main" class="t" >
 
-    <div class="form-group">
-      <label for="disabledTextInput">用户名</label>
-      <input type="text" id="disabledTextInput" class="form-control" name="username" >
-    </div>
-   <div class="form-group">
-      <label for="disabledTextInput">密码</label>
-      <input type='password' id="disabledTextInput" class="form-control" name="passwd" >
-        <label for="disabledTextInput">性别</label>
-      <input type="text" id="disabledTextInput" class="form-control" name="sex" >
-       <button type="button"  id="saveUserInfo" class="btn btn-primary pull-right">注册</button>
+		<div id="mianC" class="c">
+			<span id="loginTips">已有账号&nbsp;<a href="./login" title="登录">登录></a></span>
+            <form id="regist_form">
+			<div class="inputBox" class="form-group">
+				<div class="inputKind" id="phoneNum">账号
+				</div>
+				<input id="phoneNumInput" class="input" type="text" name="username" placeholder="请输入账号">
+			</div>
+			<p class="errorTips" id="phoneNumTips">	
+			</p>
 
+			<div class="inputBox">
+				<div class="inputKind" id="email">
+					邮件地址
+				</div>
+				<input id="emailInput" class="input" type="text" name="" >
+			</div>
+			<p style="height: 20px;">
 
-    </div>
-<br>
-                    <br>
-    <div>
+			</p>
 
-                    </div>
+			<div class="inputBox" class="form-group">
+				<div class="inputKind" id="passwd" >
+					密&nbsp;码
+				</div>
+				<input id="passwdInput" class="input" type="password"  name="passwd" placeholder="请输入密码">
+			</div>
+			<p class="errorTips" id="passwdTips">
+				
+			</p>
 
+			<div class="inputBox">
+				<div class="inputKind" id="againPasswd" class="form-group">
+					确认密码
+				</div>
+				<input id="againPasswdInput" class="input" type="password"  placeholder="请再次输入密码">
+			</div>
+			<p class="errorTips" id="againPasswdTips">
+				
+			</p>
 
+			<div class="inputBox" class="form-group">
+				<div class="inputKind" id="sex">
+					性&nbsp;别
+				</div>
+				<select name="sex" class="input">
+					<option value="male">男</option>
+					<option value="female">女</option>
+					<option value="NULL" selected="selected">保密</option>
+				</select>
+			</div>
+			<p style="height: 20px;">
+			</p>
 
-
-
-
-
-
-                    </div>
-                </div>
+			<div>
+				<button id="registerBtn" type="button" >注册</button>
             </div>
-        </div>
-    </div>
-</form>
-    </body>
+        </form>
+		</div>
+	</main>
+
+	<footer id="footer" class="t">
+		<div class="c" id="footerC">
+			<p>
+				<a href="" title="">账号用户协议</a><em>|</em>
+				<a href="" title="">关于账户与隐私的声明</a><em>|</em>
+				<a href="" title="">常见问题</a>
+			</p>
+			<p id="declaration">Copyright © 2011-2018  651科技有限公司  版权所有  保留一切权利  鲁B2-666666666号 | 鲁ICP备666666666号-9
+			</p>
+		</div>
+		
+	</footer>
+</body>
 </html>
+
+
+
     <script>
-   $("#saveUserInfo").click(function(){
+$(function() {
+	var regPhone = /^[\w_-]{6,16}$/;
+	var regMail = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+	var regPasswd = /^[\w_-]{6,16}$/;
 
-        var formObject = {};
-        var formArray =$("#regist_form").serializeArray();
-        $.each(formArray,function(i,item){
-            formObject[item.name] = item.value;
-        });
-        $.ajax({
-            url:"/regrist",
-            type:"post",
-            contentType: "application/json; charset=utf-8",
-            data: JSON.stringify(formObject),
-            dataType: "json",
-             success:function(data){ //后端返回的json数据（此处data为json对象）
-                if(data.mess=='ok')
-                {
-                    window.location.href="/";
-                }
-              else
-                {
-                    alert(data.mess)
-                }
+	$('#phoneNumInput').blur(function () {
+		if ($('#phoneNumInput').val() == '') {
+			$('#phoneNumTips').html('请输入您的账号');
+		} else {
+			var a = regPhone.test($('#phoneNumInput').val());
+			if (!a) {
+				$('#phoneNumTips').html('账号不正确');
+			} else {
+				$('#phoneNumTips').html('');
+			}
+		}
+	})
 
-          },
-            error:function(e){
-                alert("错误！！");
-            }
-        });
-    });
+	$('#passwdInput').blur(function () {
+		if ($('#passwdInput').val() == '') {
+			$('#passwdTips').html('请输入您的密码');
+		} else {
+			var a = regPasswd.test($('#passwdInput').val());
+			if (!a) {
+				$('#passwdTips').html('密码不正确，密码由6~16个字符组成');
+			} else {
+				$('#passwdTips').html('');
+			}
+		}
+	})
+
+	$('#againPasswdInput').blur(function () {
+		if ($('#againPasswdInput').val() == '') {
+			$('#againPasswdTips').html('请再次输入您的密码');
+		} else {
+			var a = $('#passwdInput').val();
+			if ($('#againPasswdInput').val() != a) {
+				$('#againPasswdTips').html('密码与确认密码不一致');
+			} else {
+				$('#againPasswdTips').html('');
+			}
+		}
+	})
+
+	$('#registerBtn').click(function () {
+		if ($('#phoneNumInput').val() == '') {
+			$('#phoneNumTips').html('请输入您的账号');
+		}
+		if ($('#passwdInput').val() == '') {
+			$('#passwdTips').html('请输入您的密码');
+		}
+		if ($('#againPasswdInput').val() == '') {
+			$('#againPasswdTips').html('请再次输入您的密码');
+		} else {
+			var formObject = {};
+			var formArray = $("#regist_form").serializeArray();
+			$.each(formArray, function (i, item) {
+				formObject[item.name] = item.value;
+			});
+			$.ajax({
+				url: "/regrist",
+				type: "post",
+				contentType: "application/json; charset=utf-8",
+				data: JSON.stringify(formObject),
+				dataType: "json",
+				success: function (data) { //后端返回的json数据（此处data为json对象）
+					if (data.mess == 'ok') {
+						window.location.href = "/";
+					} else {
+						alert(data.mess)
+					}
+
+				},
+				error: function (e) {
+					alert("错误！！");
+				}
+			});
+		}
+	})
+})
+
+
 
     </script>
-{% endblock %}
-

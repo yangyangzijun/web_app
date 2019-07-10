@@ -1,0 +1,224 @@
+<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>并夕夕帐号-登录</title>
+	<link rel="stylesheet" type="text/css" href="/static/css/base.css">
+	<link rel="stylesheet" type="text/css" href="/static/css/login_1.css">
+	<link rel="shortcut icon" href="/static/img/index/favicon.ico">
+    <link rel="stylesheet" type="text/css" href="/static/css/register.css">
+	<script type="text/javascript" src="/static/js/jquery.js"></script>
+{#	<script type="text/javascript" src="/static/js/login.js"></script>#}
+</head>
+<body>
+	<header id="header" class="t">
+		<div id="headerC" class="c">
+			<img src="https://ss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/logo_top_86d58ae1.png" alt="">
+			<span>|</span>
+			<a href="./" title=""><span id="headerTitle">并夕夕商城</span></a>
+		</div>
+	</header><!-- /header -->
+
+	<main id="main" class="t" >
+
+		<div id="mianC" class="c">
+
+            <form id="login_form">
+			<div class="inputBox" class="form-group">
+				<div class="inputKind" id="phoneNum" style="text-align: center">账&nbsp;号
+				</div>
+				<input id="accountInput" class="input" type="text" name="username" placeholder="请输入账号" style="margin-top: -1px">
+			</div>
+			<p class="errorTips" id="userTips">
+			</p>
+
+
+
+			<div class="inputBox" class="form-group">
+				<div class="inputKind" id="passwd" style="text-align: center">
+					密码
+				</div>
+				<input id="passwdInput" class="input" type="password"  name="passwd" placeholder="请输入密码" style="margin-top: -1px">
+			</div>
+			<p class="errorTips" id="passwdTips">
+
+			</p>
+
+
+			<div>
+				<button id="loginBtn" type="button" >login in</button>
+            </div>
+        </form>
+		</div>
+	</main>
+
+
+	<footer id="footer" class="t">
+		<p>
+			<a href="" title="">并夕夕账号用户协议</a><em>|</em>
+			<a href="" title="">关于并夕夕账户与隐私的声明</a><em>|</em>
+			<a href="" title="">常见问题</a>
+		</p>
+		<p id="declaration">Copyright © 2011-2018  651技术有限公司  版权所有  保留一切权利  鲁2-11111111号 | 鲁ICP备888888号-9
+		</p>
+	</footer>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{# <script>#}
+{#   $("#saveUserInfo").click(function(){#}
+{#        var formObject = {};#}
+{#        var formArray =$("#login_form").serializeArray();#}
+{#        $.each(formArray,function(i,item){#}
+{#            formObject[item.name] = item.value;#}
+{#        });#}
+{#        $.ajax({#}
+{#            url:"/login",#}
+{#            type:"post",#}
+{#            contentType: "application/json; charset=utf-8",#}
+{#            data: JSON.stringify(formObject),#}
+{#            dataType: "json",#}
+{#             success:function(data){ //后端返回的json数据（此处data为json对象）#}
+{#                if(data.mess=='ok')#}
+{#                {#}
+{#                    window.location.href="/";#}
+{#                }#}
+{#              else#}
+{#                {#}
+{#                    alert(data.mess)#}
+{#                }#}
+{#          },#}
+{#            error:function(e){#}
+{#                alert("错误！！");#}
+{#            }#}
+{#        });#}
+{#    });#}
+{#</script>#}
+
+<script>
+$(function() {
+	// 表单验证
+	var regHuaWeiNum = /^[a-zA-Z0-9_-]{4,50}$/;
+	var regPasswd = /^[\w_-]{2,16}$/;
+	var flag = 0;
+
+	$('#accountInput').blur(function () {
+		if ($('#accountInput').val() == '') {
+			$('#userTips').html('请输入您的账号');
+			$('#errorIcon').css('display', 'inline-block');
+		} else {
+			var a = regHuaWeiNum.test($('#accountInput').val());
+			if (!a) {
+				$('#errorIcon').css('display', 'inline-block');
+				$('#userTips').html('帐号限制在4~50个字符');
+				flag = 1;
+			} else {
+				$('#userTips').html('');
+				$('#errorIcon').css('display', 'none');
+				flag = 0;
+			}
+		}
+	})
+
+
+	$('#passwdInput').blur(function () {
+		if ($('#accountInput').val() !== '' && flag != 1 && $('#passwdInput').val() === '') {
+			$('#passwdTips').html('请输入您的密码');
+			$('#errorIcon').css('display', 'inline-block');
+		} else if ($('#accountInput').val() === '') {
+			$('#userTips').html('请输入您的账号');
+			$('#errorIcon').css('display', 'inline-block');
+		} else if (flag === 1) {
+			$('#errorIcon').css('display', 'inline-block');
+			$('#userTips').html('帐号限制在4~50个字符');
+		}
+		
+	})
+
+
+	$('#loginBtn').click(function () {
+		if ($('#accountInput').val() == '') {
+			$('#userTips').html('请输入您的账号');
+			$('#errorIcon').css('display', 'inline-block');
+		} else if (flag === 1) {
+			$('#errorIcon').css('display', 'inline-block');
+			$('#userTips').html('帐号限制在4~50个字符');
+		} else if ($('#accountInput').val() != '' && $('#passwdInput').val() == '' && flag == 0) {
+			$('#passwdTips').html('请输入您的密码');
+			$('#errorIcon').css('display', 'inline-block');
+		} else if (flag === 2) {
+			$('#errorIcon').css('display', 'inline-block');
+			$('#passwdTips').html('密码由6~16个字符组成');
+		} else {
+		    var formObject = {};
+        var formArray =$("#login_form").serializeArray();
+        $.each(formArray,function(i,item){
+            formObject[item.name] = item.value;
+        });
+        $.ajax({
+            url:"/login",
+            type:"post",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(formObject),
+            dataType: "json",
+             success:function(data){ //后端返回的json数据（此处data为json对象）
+                if(data.mess=='ok')
+                {
+                    window.location.href="/";
+                }
+              else
+                {
+                    alert(data.mess)
+                }
+          },
+            error:function(e){
+                alert("渣男陈泓钇");
+            }
+        });
+		}
+	})
+})
+
+    {#$('#loginBtn').click(function () {#}
+    {#    			var formObject = {};#}
+    {#    var formArray =$("#login_form").serializeArray();#}
+    {#    $.each(formArray,function(i,item){#}
+    {#        formObject[item.name] = item.value;#}
+    {#    });#}
+    {#    $.ajax({#}
+    {#        url:"/login",#}
+    {#        type:"post",#}
+    {#        contentType: "application/json; charset=utf-8",#}
+    {#        data: JSON.stringify(formObject),#}
+    {#        dataType: "json",#}
+    {#         success:function(data){ //后端返回的json数据（此处data为json对象）#}
+    {#            if(data.mess=='ok')#}
+    {#            {#}
+    {#                window.location.href="/";#}
+    {#            }#}
+    {#          else#}
+    {#            {#}
+    {#                alert(data.mess)#}
+    {#            }#}
+    {#      },#}
+    {#        error:function(e){#}
+    {#            alert("错误！！");#}
+    {#        }#}
+    {#    });#}
+    {#})#}
+</script>

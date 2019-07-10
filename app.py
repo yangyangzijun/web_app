@@ -319,7 +319,7 @@ def index():
 def login():
     if request.method=="GET":
         
-        return  render_template('login.html')
+        return  render_template('login (1).html')
     elif request.method=="POST":
         request_data = json.loads(request.data.decode('utf-8'))
         username = request_data['username']
