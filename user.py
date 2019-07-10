@@ -12,9 +12,23 @@ db = pymysql.connect(
 
 
 def op_sql(s):
-    cursor = db.cursor()
-    print(s)
-    cursor.execute(s)
+    
+
+    try:
+        cursor = db.cursor()
+        print(s)
+        cursor.execute(s)
+    except:
+        db = pymysql.connect(
+            host='192.168.43.68',
+            port=3306,
+            user='root',
+            passwd='',
+            db='web_db',
+            charset='utf8' )
+        cursor = db.cursor()
+        print(s)
+        cursor.execute(s)
     
     cursor.close()
     db.commit()
@@ -50,6 +64,7 @@ class User:
             cursor = db.cursor()
             cursor.execute(f"delete from orders where order_id = '{order_id}' ")
             cursor.close()
+            db.commit()
             return 1
         except:
             return -1

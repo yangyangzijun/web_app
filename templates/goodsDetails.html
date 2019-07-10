@@ -1,56 +1,168 @@
-	<!DOCTYPE html>
-<html lang="en">
+<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+
+<!DOCTYPE html>
+<html>
 <head>
 	<meta charset="UTF-8">
-	<title>物品详情页</title>
-	<link rel="stylesheet" type="text/css" href="/static/css/base.css">
-	<link rel="stylesheet" type="text/css" href="/static/css/nav.css">
-	<link rel="stylesheet" type="text/css" href="/static/css/footer.css">
-	<link rel="stylesheet" type="text/css" href="/static/css/fixedMenu.css">
-	<link rel="stylesheet" type="text/css" href="/static/css/goodsDetails.css">
+	<script src="static/js/jquery-1.11.3.js" type="text/javascript" charset="utf-8"></script>
+	<script src="static/js/index_jquey.js" type="text/javascript" charset="utf-8"></script>
+	<script src="static/js/mian.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript" src="static/js/indexData.js"></script>
+	<script type="text/javascript" src="static/js/jquery.js"></script>
+	<script type="text/javascript" src="static/js/index.js"></script>
 
-	<script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.0.js"> </script>
+	<link rel="stylesheet" type="text/css" href="static/css/main.css">
+	<link rel="stylesheet" type="text/css" href="static/css/reset.css">
+
+	<link rel="stylesheet" type="text/css" href="static/css/nav.css">
+	<link rel="stylesheet" type="text/css" href="static/css/fixedMenu.css">
+	<link rel="stylesheet" type="text/css" href="static/css/base.css">
+	<link rel="shortcut icon" href="static/img/index/favicon.ico">
+	<link rel="stylesheet" type="text/css" href="static/css/index_1.css">
+<!-- 	<link rel="stylesheet" type="text/css" href="static/css/footer.css"> -->
+<style>
+    .body{
+position: relative;
+/*background-color: #202121;*/
+height: 300px;
+width: 80%;
+margin: 0 auto;
+	}
+	.top_1{
+height: 50px;
+width: 10%;
+/*background-color: yellow;*/
+opacity: 0.9;
+float: left;
+margin-right: 10px;
+
+	}
+	.top .top_1 {
+		font-size: 24px;
+
+		line-height: 50px;
+	}
+	.top_2{
+
+height: 50px;
+width: 500px;
+/*background-color: pink;*/
+opacity: 0.9;
+float: left;
+line-height: 50px;
+	}
+	.down{
+position: relative;
+height: 250px;
+width: 100%;
+/*background-color: blue;*/
+opacity: 0.9;
+top: 50px;
+	}
+#ttt{
+	position: relative;
+	display: block;
+	top: -50px;
+    font-size: 20px;
+
+    color: red;
+}
+</style>
+
+	<title>想喝大可乐</title>
+    	<nav class="nav">
+			<div class="nav_black">
+					<ul class="nav_black_left">
+						<li><a href="https://www.coca-cola.com.cn/" target="_blank">大可乐</a></li>
+						<li>|</li>
+						<li><a href="">可乐</a></li>
+						<li>|</li>
+						<li><a href="">雪碧</a></li>
+						<li>|</li>
+						<li><a href="">脉动</a></li>
+						<li>|</li>
+						<li><a href="">尖叫</a></li>
+						<li>|</li>
+						<li><a href="">农夫山泉</a></li>
+						<li>|</li>
+						<li><a href="">陈泓钇</a></li>
+						<li>|</li>
+						<li><a href="">硫酸</a></li>
+						<li>|</li>
+						<li><a href="">问题反馈</a></li>
+						<li>|</li>
+						<li><a href="">Select Region</a></li>
+						<div class="clear"></div>
+					</ul>
+
+				<div class="nav_black_right">
+					<div class="fr" id="user_mess">
+						<ul>
+
+
+
+
+                            <li><a href="/cal_sub" style="color: red"  id="shopping_num">\__/***购物车（0）</a></li>
+							<li><a href="">消息通知</a></li>
+							<li>|</li>
+							<li><a  href="/regrist" role="button">注册</a></li>
+							<li>|</li>
+							<li><a  href="/login" >登录</a></li>
+						</ul>
+					</div>
+				</div>
+
+
+
+			</div>
+	</nav>
 
 </head>
-<body>
-	<header id="header" class="t">
-		<nav id="navTop" class="t">
-				<div id="navTopC" class="c">
-					<ul id="navTopLeft" class="l">
-						<li class="topLinks" id="indexPage"><a href="home.html">首页</a></li>
-					</ul>
 
-					<ul id="navTopRight" class="r">
-						<li id="login" class="topLinks"><a  href="login.html">请登录</a></li>
-						<li id="register" class="topLinks"><a href="registe.html">注册</a></li>
-						<li class="topLinks"><a href="">已成交订单</a></li>
-						<li id="buyCarBox" class="topLinks">
-							<a href="" id="buyCarLink">
-								购物车(0)
-							</a>
-							<p class="mySecondMemu myBuyCar">
-								<!--img src="/static/img/index/byCar.png" alt=""-->
-							</p>
-						</li>
-					</ul>
-				</div>
-		</nav>
-		<!-- ><nav id="navBottom" class="t">
+
+
+	<div id="gouwuchebox">
+		<p>这里什么都没有~</p>
+	</div>
+	<!-- navigation -->
+<!--标题栏  -->
+<!--标题栏结束-->
+
+
+<!-- banner -->
+	<header id="header" class="t">
+			<nav id="navBottom" class="t">
 			<div id="navBottomC" class="c">
-				<section id="search">
-						<input type="text" id="searchBox" value="serch" >
-						<a href="" title=""><i id="searchBtn"></i></a>
-					</section>
-			</div-->
-			<!-- 二级菜单 >
-		</nav><-->
-	</header><!-- /header -->
-	
-	<main id="main" class="t">
+
+            </div>
+            </nav>
+    </header>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<!-- 开始主体 -->
+
+
+<!-- 手机 -->
+    <div class="phoneAll" id="phone" style="overflow: hidden;">
+	   	<main id="main" class="t">
 		<section id="mainNav" class="c">
 
 		</section>
-		
+
 		<section id="goodDetailsTop" class="c">
 			<div id="goodsPhoto">
 				<div id="originalPicBox">
@@ -62,16 +174,15 @@
 				</div>
 
 				<div id="smallPicList">
-					<div class="moveBtn" id="before"></div>
-					<div  class="moveBtn" id="next"></div>
-					
+
+
 					<div id="zoomToolbtnsFBox">
 
 					</div>
 				</div>
 			</div>
 
-			<div id="goodsInf" >
+			<div id="goodsInf"  style="font-size: 15px">
 				<h1 id="goodsName" >物品名</h1>
 				<div id="goodsAtivities">
 					<p>
@@ -93,10 +204,7 @@
 
 				</div>
 			</div>
-			<div id="cornerIconBox">
-				<i class="cornerIcon"></i>
-				<i class="cornerIcon"></i>
-			</div>
+
 		</section>
 
 		<section id="goodDetailsBottom" class="t">
@@ -106,31 +214,80 @@
 						<li class="bottomNavLink"><a href="#userComment" title="">用户评价</a></li>
 						<li id="addBuycarBtn">加入购物车</li>
 					</ul>
-				</div>		
+				</div>
 			</div>
 		</section>
 	</main>
+
+		<div class="phoneImg" id="list_goods_phone" style="overflow: auto">
+
+		</div>
+</div>
+
+
+
+<head>
+	<meta charset="UTF-8">
+	<title>物品详情页</title>
+	<link rel="stylesheet" type="text/css" href="/static/css/base.css">
+	<link rel="stylesheet" type="text/css" href="/static/css/nav.css">
+	<link rel="stylesheet" type="text/css" href="/static/css/footer.css">
+	<link rel="stylesheet" type="text/css" href="/static/css/fixedMenu.css">
+	<link rel="stylesheet" type="text/css" href="/static/css/goodsDetails.css">
+
+	<script src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.0.js"> </script>
+
+</head>
+<body>
+	<header id="header" class="t">
+
+		<!-- ><nav id="navBottom" class="t">
+			<div id="navBottomC" class="c">
+				<section id="search">
+						<input type="text" id="searchBox" value="serch" >
+						<a href="" title=""><i id="searchBtn"></i></a>
+					</section>
+			</div-->
+			<!-- 二级菜单 >
+		</nav><-->
+	</header><!-- /header -->
+
+
 
 	<section id="fixedMune" class="t">
 		<a id="goTop" class="fixedMuneLinks" href="#" title="">
 			<i class="fixedMuneTips">返回顶部</i>
 		</a>
-        <a  class="goods_id" id="{{ data}}">{{ data }}</a>
+        <a  class="goods_id" id="{{ data}}"></a>
 	</section>
 </body>
-     <div id='inputbox' class="box" style="display: none;">
-
-         <div id="pinja" style="text-align: center;height: 20px;">
-             <textarea id="ttt" style="margin-left:10px ;margin-right: 10px"></textarea>
+          <div id='inputbox' class="box" style="display: none;">
+         <div id="pinja" style="text-align: center;">
+             <a id="ttt" type="text" style="font-size:30px;color: firebrick;display: block;margin-top: 20%;">商品已添加至购物车</a>
          </div>
-         <div style="margin-top: 250px">
-             <a id="submit_pingjia">jn</a>
-         <a class='x'  onclick="msgbox(0); return false;">关闭</a>
+         <div style="">
+          <button class='x'  type="button" onclick="msgbox(0); return false;" style=" font-size: 20px;color: #d0021b;">关闭</button>
          </div>
-
      </div>
+
+<div class="top_1" id="lplp"  style="">
+
+</div>
+
+
+</div>
+
+<div >
+    <p style="font-size: 25px;color: red;"  id="lol">评价</p>
+<div class="evaluate" >
+
+
+</div></div>
 </html>
     <style>
+        .evaluate{
+            font-size: 50px;
+        }
         #inputbox {
     text-align: center;
     background-color: #fff;
@@ -149,6 +306,36 @@
 
 
     <script>
+
+ $.ajax({
+
+ 			url: "/check_login",
+            type: "get",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+success: function (data) {
+
+if (data.mess == 'ok') {
+	var m = '<ul>'+
+             '<li><a href="/cal_sub" style="color: red"  id="shopping_num">\\__/***购物车（0）</a></li>'+
+	'<li><a href="">消息通知</a></li>'+
+	'<li>|</li>'+
+	'<li>'+'<a href="/logout">注销</a>'+'</li>'+
+	'<li>|</li>'+
+	'<li><a  href="/login" >欢迎'+ data.username+'</a></li>'+
+
+	'</ul>';
+	document.getElementById("user_mess").innerHTML = m;
+}
+else{
+
+}
+
+}
+
+})
+
+
         function msgbox(n){
 
             document.getElementById('inputbox').style.display=n?'block':'none';     /* 点击按钮打开/关闭 对话框 */
@@ -165,7 +352,8 @@
                   success:function(ko){ //后端返回的json数据（此处data为json对象）
                     if(ko.mess="ok")
                     {
-                        alert("dedf")
+                        get_shop_num()
+
                         $('textarea[id="ttt"]').val("商品已添加成功")
                         msgbox(1)
 
@@ -185,7 +373,7 @@
 
         })
       function change() {
-alert($(this).html())
+
       }
       var data =  {};
     data["goods_id"] = $(".goods_id").attr("id").toString();
@@ -199,17 +387,74 @@ alert($(this).html())
             data: JSON.stringify(data),
             dataType: "json",
              success:function(data_1){ //后端返回的json数据（此处data为json对象）
-                data = data_1
+               $.ajax({
+            url:"/get_test",
+            type:"post",
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(data),
+            dataType: "json",
+             success:function(data_1){ //后端返回的json数据（此处data为json对象）data_1.data.length
+                var s= '<p class = "evaluate">评价('+data_1.data.length+')</p>';
+                $("#lol").replaceWith(s)
+                for(var i=0;i<data_1.data.length;i++)
+                {
+                    star_num= parseInt(data_1.data[i].star_class)
+                    var kk  = ""
+                    for(var j=0;j<star_num;j++)
+                    {
+                        kk += '<span class="star" style= "color:orange;" >★</span>'
+                    }
+                    var m='<div class="body">'+
+                        '<div class="top">'+
+                            '<div class="top_1">'+
+		                        '<a>'+data_1.data[i].username+'</a>'+
+                            '</div>'+
+	                            '<div class="top_2" style="font-size: 20px">'+
+                                        '<span class="all" >服务评价：</span>'+
+                                        kk+
+                                        '<span id="txt"></span>'+
+                                '</div>'+
+                        '</div>'+
+                          '<div class="down">'+
+	                           '<div>'+
+	                           '<textarea id="ttt" cols="101" rows="10" readonly="readonly">'+data_1.data[i].evalute+'</textarea>'+
+	                            '</div>'+
+                           '</div>'+
+                      '</div>';
+                    $("#lplp").append(m)
+
+                }
+                 function int_to_star(s) {
+        var ostar=document.getElementsByClassName('star');
+	var txt=document.getElementById('txt');
+	var cont=['很差','较差','还行','推荐','满意'];
+		for(var i=0;i<s;i++){
+			ostar[i].clr=false;
+			ostar[i].style.color='orange';
+			txt.innerHTML=cont[i];
+			xingji=i
+		}
+		txt.style.color='orange';
+    }
+
+                 //$(".evaluate").replaceWith(s)
+          },
+            error:function(e){
+                alert("错误！！");
+            }
+        });
+               data = data_1
 
 
 
-                 var ppp  = "tjtyjty"
+                 var ppp  = ""
 					for(var i=0;i<data_1.photo.length;i++)
                     {
                         ppp+='<li class="zoomToolbtns"> <a id="'+i+'"> <img class="zoomToolbtnPic" " src= "/'+data_1.photo[i]+'"> </a></li>';
                     }
                     $("#zoomToolbtnsFBox").replaceWith(ppp)
                     var dfo ='<img src="/'+data_1.photo[0]+'"  > <div id="square"></div>';
+
 
 					document.getElementById("originalPicBox").innerHTML =  dfo;
 
@@ -219,7 +464,7 @@ alert($(this).html())
 
 					var id='<span class="goodsInfTitle goodsAtivitiesInf">商品编码</span> <span class="explain">\n' + data_1.goods_id + '</span>';
                     $(".explain").replaceWith('<span class="explain">\n' +
-                        '\t\t\t\t\t\t\t\t2'+data_1.goods_id+'\n' +
+                        ''+data_1.goods_id+'\n' +
                         '\t\t\t\t\t</span>')
 
 
@@ -239,10 +484,52 @@ alert($(this).html())
 					/*var dfz ='<img src="/'+pics[0]+'" alt="">'
 					document.getElementById("zoomToolBox").innerHTML = dfz;*/
 
+
+
+
           },
             error:function(e){
                 alert("错误！！");
             }
         });
 
+
+
     </script>
+<script>
+    var shopping_num='0'
+    function change_shopping_num() {
+
+        $("#shopping_num").replaceWith('<a href="/cal_sub" style="color: red"  id="shopping_num">\\__/***购物车（'+shopping_num+
+            '）</a>')
+    }
+      get_shop_num()
+   function get_shop_num() {
+        $.ajax({
+
+ 			url: "/get_shop_num",
+            type: "get",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+success: function (dat) {
+
+if (dat.mess == 'ok') {
+
+    if(dat.num != "None")
+    {
+
+
+        shopping_num = dat.num
+    }
+    change_shopping_num()
+}
+else{
+
+}
+
+}
+
+})
+    }
+
+</script>

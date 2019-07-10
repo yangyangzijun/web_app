@@ -23,16 +23,7 @@
 
 
 	<title>想喝大可乐</title>
-</head>
-<body>
-
-
-	<div id="gouwuchebox">
-		<p>这里什么都没有~</p>
-	</div>
-	<!-- navigation -->
-<!--标题栏  -->
-	<nav class="nav">
+    	<nav class="nav">
 			<div class="nav_black">
 					<ul class="nav_black_left">
 						<li><a href="https://www.coca-cola.com.cn/" target="_blank">大可乐</a></li>
@@ -74,6 +65,16 @@
 
 			</div>
 	</nav>
+
+</head>
+<body>
+
+
+	<div id="gouwuchebox">
+		<p>这里什么都没有~</p>
+	</div>
+	<!-- navigation -->
+<!--标题栏  -->
 <!--标题栏结束-->
 
 
@@ -269,38 +270,7 @@ $.ajax({
             }
         });
 
-	function add() {
-    var lo= {};
-                 lo['goods_id']=event.target.getAttribute("id");
 
-    $.ajax({
-        url: "/check_login",
-        type: "get",
-        contentType: "application/json; charset=utf-8",
-
-        dataType: "json",
-        success: function (data) {//后端返回的json数据（此处data为json对象）
-            if (data.mess == 'ok') {
-
-                 $.ajax({
-                            url:"/create_order",
-                            type:"post",
-                            contentType: "application/json; charset=utf-8",
-                            data: JSON.stringify(lo),
-                            dataType: "json",
-                            success: function (data){
-
-                            }});
-                            }
-            else
-            {
-                alert("请登录")
-            }
-                        }
-                    });
-
-
-}
 
  $.ajax({
 
@@ -329,6 +299,12 @@ else{
 }
 
 })
+      var shopping_num='0'
+    function change_shopping_num() {
+
+        $("#shopping_num").replaceWith('<a href="/cal_sub" style="color: red"  id="shopping_num">\\__/***购物车（'+shopping_num+
+            '）</a>')
+    }
 </script>
 
 

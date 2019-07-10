@@ -16,10 +16,31 @@ UPLOAD_FOLDER = 'static'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 basedir = os.path.abspath(os.path.dirname(__file__))
 ALLOWED_EXTENSIONS = set(['txt', 'png', 'jpg', 'xls', 'JPG', 'PNG', 'xlsx', 'gif', 'GIF'])
-
+@app.route('/get_shop_num', methods=['GET', 'POST'])
+def  shop_num():
+    if 'username' in session:
+        name = session["username"]
+        s= f'select sum(orders.num) from user,orders where user.user_id= orders.user_id and username = "{ name }"'
+        data = op_sql(s)
+        print(data[0][0])
+        return jsonify({"mess": "ok","num":str(data[0][0])})
+    else:
+        return jsonify({"mess":"请登录"})
 @app.route('/get_test', methods=['GET', 'POST'])
 def  mulp():
-    return render_template('goodsDetails.html')
+    if request.method == "POST":
+        request_data = json.loads(request.data.decode('utf-8'))
+        print(request_data['goods_id'])
+        data=op_sql(f"select username,evalute,star_class,checked_orders.num from user,checked_orders where goods_id = {request_data['goods_id']} and checked_orders.user_id = user. user_id and checked_orders.received=2;")
+        li = []
+        for l in data:
+            res = {'username': l[0], 'evalute': l[1], 'star_class': l[2], 'num': l[3]}
+            li.append(res)
+        result = {}
+        result['data'] = li
+        result['mess'] = 'ok'
+        return jsonify(result)
+
 @app.route('/pingjia', methods=['GET', 'POST'])
 def  get_mess_with_pingjia():
     request_data = json.loads(request.data.decode('utf-8'))
@@ -342,6 +363,7 @@ def login():
 def logout():
     # remove the username from the session if it's there
     session.pop('username', None)
+    session.pop("user_id",None)
     return redirect(url_for('index'))
 @app.route('/regrist',methods=['POST',"GET"])
 
