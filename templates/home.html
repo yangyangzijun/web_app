@@ -19,29 +19,27 @@
 	<link rel="stylesheet" type="text/css" href="static/css/base.css">
 	<link rel="shortcut icon" href="static/img/index/favicon.ico">
 	<link rel="stylesheet" type="text/css" href="static/css/index_1.css">
+    <meta http-equiv="content-type" content="text/html;charset=utf-8">
+		<meta content="always" name="referrer">
+        <meta name="theme-color" content="#2932e1">
+        <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon" />
 <!-- 	<link rel="stylesheet" type="text/css" href="static/css/footer.css"> -->
 
 
-	<title>想喝大可乐</title>
+	<title>并夕夕商城</title>
     	<nav class="nav">
 			<div class="nav_black">
 					<ul class="nav_black_left">
-						<li><a href="https://www.coca-cola.com.cn/" target="_blank">大可乐</a></li>
+						<li><a href="/" target="_blank">并夕夕商城</a></li>
 						<li>|</li>
-						<li><a href="">可乐</a></li>
-						<li>|</li>
-						<li><a href="">雪碧</a></li>
-						<li>|</li>
-						<li><a href="">脉动</a></li>
-						<li>|</li>
-						<li><a href="">尖叫</a></li>
-						<li>|</li>
-						<li><a href="">农夫山泉</a></li>
-						<li>|</li>
-						<li><a href="">陈泓钇</a></li>
-						<li>|</li>
-						<li><a href="">硫酸</a></li>
-						<li>|</li>
+{#						<li><a href="">可乐</a></li>#}
+{#						<li>|</li>#}
+{#						<li><a href="">雪碧</a></li>#}
+{#						<li>|</li>#}
+{#						<li><a href="">陈泓钇</a></li>#}
+{#						<li>|</li>#}
+{#						<li><a href="">硫酸</a></li>#}
+{#						<li>|</li>#}
 						<li><a href="">问题反馈</a></li>
 						<li>|</li>
 						<li><a href="">Select Region</a></li>
@@ -52,9 +50,9 @@
 					<div class="fr" id="user_mess">
 						<ul>
                             	<li><a href="/cal_sub" style="color: red">\__/***购物车（0）</a></li>
-							<li><a href="">消息通知</a></li>
+							<li><a href="/checked_orders">订单中心</a></li>
 							<li>|</li>
-							<li><a  href="/regrist" role="button">注册</a></li>
+							<li><a  href="/regist" role="button">注册</a></li>
 							<li>|</li>
 							<li><a  href="/login" >登录</a></li>
 						</ul>
@@ -84,7 +82,7 @@
 			<div id="navBottomC" class="c">
 				<section id="navBottomLeft">
 
-						<img id="indexLogo" src="static/img/index/logo.png" alt="">
+						<img id="indexLogo" src="static/logo.png" alt="" style="width: 132px;height: 50px;">
 					</a>
 					<ul id="navBottomLinkBox">
 						<li id="phoneSelft" class="navBottomLinks">
@@ -193,7 +191,7 @@
 				<ul id="sloganBox">
 					<li class="sloganInf"><a href="">
 						<i class="sloganIcon"></i>
-						<span class="sloganText">百强企业 品质保证</span>
+						<span class="sloganText">亿强企业 品质保证</span>
 					</a></li>
 					<li class="sloganInf"><a href="">
 						<i class="sloganIcon"></i>
@@ -201,11 +199,11 @@
 					</a></li>
 					<li class="sloganInf"><a href="">
 						<i class="sloganIcon"></i>
-						<span class="sloganText">48元起免运费</span>
+						<span class="sloganText">48W元起免运费</span>
 					</a></li>
 					<li class="sloganInf"><a href="">
 						<i class="sloganIcon"></i>
-						<span class="sloganText">1000家维修网点 全国联保</span>
+						<span class="sloganText">0家维修网点 无联保</span>
 					</a></li>
 				</ul>
 			</section>
@@ -282,12 +280,12 @@ success: function (data) {
 
 if (data.mess == 'ok') {
 	var m = '<ul>'+
-             '<li><a href="/cal_sub" style="color: red">\\__/***购物车（0）</a></li>'+
-	'<li><a href="">消息通知</a></li>'+
+             '<li><a href="/cal_sub" style="color: red">\\__/***购物车</a></li>'+
+	'<li><a href="/checked_orders">订单中心</a></li>'+
 	'<li>|</li>'+
 	'<li>'+'<a href="/logout">注销</a>'+'</li>'+
 	'<li>|</li>'+
-	'<li><a  href="/login" >欢迎'+ data.username+'</a></li>'+
+	'<li><a  href="" >欢迎'+ data.username+'</a></li>'+
 
 	'</ul>';
 	document.getElementById("user_mess").innerHTML = m;

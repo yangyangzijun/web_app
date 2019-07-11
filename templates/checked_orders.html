@@ -5,8 +5,12 @@
 </script>
 <html>
     <head>
-        <title> 购物车 </title>
+        <title> 订单中心 </title>
         <meta charset="utf-8"/>
+        <meta http-equiv="content-type" content="text/html;charset=utf-8">
+		<meta content="always" name="referrer">
+        <meta name="theme-color" content="#2932e1">
+        <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon" />
 
         <style type="text/css">
 
@@ -792,9 +796,71 @@ nav {
 }
 
         </style>
+        <link rel="stylesheet" type="text/css" href="static/css/main.css">
     </head>
 
     <body>
+        	<nav class="nav">
+			<div class="nav_black">
+					<ul class="nav_black_left">
+						<li><a href="/" target="_blank">并夕夕商城</a></li>
+						<li>|</li>
+
+						<li><a href="">问题反馈</a></li>
+						<li>|</li>
+						<li><a href="">Select Region</a></li>
+						<div class="clear"></div>
+					</ul>
+
+				<div class="nav_black_right">
+					<div class="fr" id="user_mess">
+						<ul>
+                            	<li><a href="/cal_sub" style="color: red"   id="shopping_num">\__/***购物车</a></li>
+							<li><a href="/checked_orders">订单中心</a></li>
+							<li>|</li>
+							<li><a  href="/regrist" role="button">注册</a></li>
+							<li>|</li>
+							<li><a  href="/login" >登录</a></li>
+						</ul>
+					</div>
+				</div>
+
+
+
+			</div>
+	</nav>
+<script>
+     $.ajax({
+
+ 			url: "/check_login",
+            type: "get",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+success: function (data) {
+
+if (data.mess == 'ok') {
+	var m = '<ul>'+
+             '<li><a href="/cal_sub" style="color: red"  id="shopping_num">\\__/***购物车（0）</a></li>'+
+	'<li><a href="/checked_orders">订单中心</a></li>'+
+	'<li>|</li>'+
+	'<li>'+'<a href="/logout">注销</a>'+'</l' +
+        '' +
+        'i>'+
+	'<li>|</li>'+
+	'<li><a  href="/login" >欢迎'+ data.username+'</a></li>'+
+
+	'</ul>';
+	document.getElementById("user_mess").innerHTML = m;
+}
+else{
+
+}
+
+}
+
+})
+</script>
+
         <div id="header"></div>
 
         <div id="main">
@@ -823,7 +889,7 @@ nav {
 
 
 
-     <input type="button" onClick="msgbox(1)" value="评价">
+{#     <input type="button" onClick="msgbox(1)" value="评价">#}
 
 
             </table>
@@ -850,7 +916,7 @@ nav {
              <textarea id="ttt" style="margin-left:10px ;margin-right: 10px"></textarea>
          </div>
          <div style="margin-top: 250px">
-             <a id="submit_pingjia">jn</a>
+             <a id="submit_pingjia" style="display: block;text-align: -webkit-left; margin-bottom: -20px; font-size: 18px;">提交</a>
          <a class='x'  onclick="msgbox(0); return false;">关闭</a>
          </div>
 
@@ -1318,7 +1384,7 @@ if (allCheckNum == checkedNum) {
                 }
               else
                 {
-                    alert(data.mess)
+                   alert(data.mess)
                 }
 
           },
@@ -1334,7 +1400,7 @@ if (allCheckNum == checkedNum) {
       data = {}
       data["order_id"] = ordre_id
       data["xingji"] = xingji
-              alert($('textarea[id="ttt"]').val())
+
 
 
       data["content"] = $('textarea[id="ttt"]').val().toString()

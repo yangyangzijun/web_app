@@ -1,4 +1,6 @@
-<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+<script src="/static/js/security.js"> </script>
+<script src="/static/js/jquery.base64.js"></script>
+<script type="text/javascript" src="https://passport.cnblogs.com/scripts/jsencrypt.min.js"></script>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -99,7 +101,21 @@
 
 
 
-    <script>
+<script>
+    var publicKey;
+    $.ajax({
+            url:"/get_key",
+            type:"get",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+             success:function(data_1){
+                data = data_1;
+                if(data.mess = 'ok'){
+                    publicKey=data.publicKey;
+                }
+                else alert("未接收到公钥");
+             }
+    })
 $(function() {
 	var regPhone = /^[\w_-]{6,16}$/;
 	var regMail = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
@@ -159,8 +175,14 @@ $(function() {
 			$.each(formArray, function (i, item) {
 				formObject[item.name] = item.value;
 			});
+			alert("sadsaf");
+            var encrypt = new JSEncrypt();
+            publicKey = '"'+publicKey+'"';
+            encrypt.setPublicKey(publicKey);
+            formObject['passwd']  = encrypt.encrypt(formObject['passwd'] );//加密后的字符串
+            alert("sadasdsaf")
 			$.ajax({
-				url: "/regrist",
+				url: "/regist",
 				type: "post",
 				contentType: "application/json; charset=utf-8",
 				data: JSON.stringify(formObject),
@@ -171,7 +193,6 @@ $(function() {
 					} else {
 						alert(data.mess)
 					}
-
 				},
 				error: function (e) {
 					alert("错误！！");

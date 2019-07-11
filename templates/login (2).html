@@ -1,5 +1,6 @@
-<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
-</html>
+<script src="/static/js/security.js"> </script>
+<script src="/static/js/jquery.base64.js"></script>
+<script type="text/javascript" src="https://passport.cnblogs.com/scripts/jsencrypt.min.js"></script>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -111,6 +112,20 @@
 {#</script>#}
 
 <script>
+    var publicKey;
+    $.ajax({
+            url:"/get_key",
+            type:"get",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+             success:function(data_1){
+                data = data_1;
+                if(data.mess = 'ok'){
+                    publicKey=data.publicKey;
+                }
+                else alert("未接收到公钥");
+             }
+    })
 $(function() {
 	// 表单验证
 	var regHuaWeiNum = /^[a-zA-Z0-9_-]{4,50}$/;
@@ -152,6 +167,8 @@ $(function() {
 
 
 	$('#loginBtn').click(function () {
+
+
 		if ($('#accountInput').val() == '') {
 			$('#userTips').html('请输入您的账号');
 			$('#errorIcon').css('display', 'inline-block');
@@ -170,6 +187,10 @@ $(function() {
         $.each(formArray,function(i,item){
             formObject[item.name] = item.value;
         });
+        var encrypt = new JSEncrypt();
+        publicKey = '"'+publicKey+'"';
+        encrypt.setPublicKey(publicKey);
+        formObject['passwd']  = encrypt.encrypt(formObject['passwd'] );//加密后的字符串
         $.ajax({
             url:"/login",
             type:"post",
@@ -220,5 +241,4 @@ $(function() {
     {#            alert("错误！！");#}
     {#        }#}
     {#    });#}
-    {#})#}
 </script>

@@ -22,7 +22,7 @@ opener = urllib.request.build_opener(proxy_handler)
 
 
 handler=urllib.request.ProxyHandler({'https':'127.0.0.1:888'})
-opener=urllib.request.build_opener(handler)
+
     #安装opener设置全局代理，只要加载网页都会使用该代理
 urllib.request.install_opener(opener)
 a = urllib.request.Request("http://www.baidu.com")

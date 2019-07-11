@@ -8,6 +8,22 @@ import redis
 re = redis.Redis(host='192.168.43.68', port=6379)
 
 from flask_cors import *
+import base64
+from Crypto import Random
+from Crypto.Cipher import PKCS1_v1_5 as Cipher_pkcs1_v1_5
+from Crypto.PublicKey import RSA
+# rsa算法生成实例
+RANDOM_GENERATOR=Random.new().read
+rsa = RSA.generate(1024, RANDOM_GENERATOR)
+# master的秘钥对的生成
+PRIVATE_PEM = rsa.exportKey()
+with open('master-private.pem', 'wb') as f:
+    f.write(PRIVATE_PEM)
+PUBLIC_PEM = rsa.publickey().exportKey()
+with open('master-public.pem', 'wb') as f:
+    f.write(PUBLIC_PEM)
+f.close()
+
 
 
 
@@ -16,6 +32,16 @@ UPLOAD_FOLDER = 'static'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 basedir = os.path.abspath(os.path.dirname(__file__))
 ALLOWED_EXTENSIONS = set(['txt', 'png', 'jpg', 'xls', 'JPG', 'PNG', 'xlsx', 'gif', 'GIF'])
+@app.route('/get_key',methods=['get'])
+def get_key():
+    data={}
+    with open('master-public.pem') as f:
+        key1 = f.read()
+    data['publicKey']=key1
+    data['mess'] = "ok"
+    f.close()
+    return  jsonify(data)
+
 @app.route('/get_shop_num', methods=['GET', 'POST'])
 def  shop_num():
     if 'username' in session:
@@ -339,23 +365,29 @@ def index():
 @app.route('/login',methods=['GET','POST'])
 def login():
     if request.method=="GET":
-        
-        return  render_template('login (1).html')
+        return  render_template('login (2).html')
     elif request.method=="POST":
-        request_data = json.loads(request.data.decode('utf-8'))
-        username = request_data['username']
-        passwd = request_data['passwd']
-        u = User(username,passwd)
-        
-        if u.test_password() == 1:
-            session['username'] = u.username
-            
-            return jsonify({'mess':'ok'})
-        elif u.test_password()==-1:
-            print(session["user_id"])
-            return jsonify({'mess':'error'})
-        else:
-            return jsonify({'mess':'密码错误'})
+        try:
+            request_data = json.loads(request.data.decode('utf-8'))
+            username = request_data['username']
+            passwd = request_data['passwd']
+            with open('master-private.pem') as f:
+                key = f.read()
+            rsakey = RSA.importKey(key)
+            cipher = Cipher_pkcs1_v1_5.new(rsakey)
+            password = cipher.decrypt(base64.b64decode(passwd), RANDOM_GENERATOR).decode()
+            u = User(username,password)
+            if u.test_password() == 1:
+                session['username'] = u.username
+                return jsonify({'mess':'ok'})
+            elif u.test_password()==-1:
+                print(session["user_id"])
+                return jsonify({'mess':'error'})
+            else:
+                return jsonify({'mess':'密码错误'})
+        except:
+            return jsonify({'mess':'mudamudamudamudamuda'})
+
             
         
 @app.route('/logout')
@@ -365,24 +397,29 @@ def logout():
     session.pop('username', None)
     session.pop("user_id",None)
     return redirect(url_for('index'))
-@app.route('/regrist',methods=['POST',"GET"])
-
-def regeist():
+@app.route('/regist',methods=['POST',"GET"])
+def regist():
     # remove the username from the session if it's there
     if request.method=="GET":
-        return render_template('register.html')
+        return render_template('register (1).html')
     if request.method =="POST":
         request_data = json.loads(request.data.decode('utf-8'))
         username = request_data['username']
-        password = request_data['passwd']
+        passwd = request_data['passwd']
+        with open('master-private.pem') as f:
+            key = f.read()
+        rsakey = RSA.importKey(key)
+        cipher = Cipher_pkcs1_v1_5.new(rsakey)
+        password = cipher.decrypt(base64.b64decode(passwd), RANDOM_GENERATOR).decode()
+        print(password)
         sex = request_data['sex']
         u = User(username,password,sex)
-        
         if u.regist()==0:
             return jsonify({'mess': '用户名已存在'})
         else:
-           
+
             return jsonify({'mess':'ok'})
+
       
             
 @app.route('/admin',methods=['POST',"GET"])
@@ -411,6 +448,7 @@ def js_test():
     check(d)
     print(d["out_trade_no"])
     s = re.get(d["out_trade_no"]).decode('utf-8')
+    print(s)
    
     try :
         a=f'insert into checked_orders  (user_id,goods_id,num)  (select user_id,goods_id,num from orders where order_id in ({ s } ))'

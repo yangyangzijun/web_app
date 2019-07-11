@@ -1,42 +1,48 @@
 import pymysql
 from flask import session
 
-db = pymysql.connect(
-    host='192.168.43.68',
-    port=3306,
-    user='root',
-    passwd='',
-    db='web_db',
-    charset='utf8'
-)
 
+db = pymysql.connect(host='192.168.43.68', port=3306, user='root', passwd='', db='web_db', charset='utf8',
+                         autocommit=1)
+
+db1 = pymysql.connect(host='192.168.43.166', port=3307, user='root', passwd='', db='web_db', charset='utf8',
+                         autocommit=1)
 
 def op_sql(s):
+    if s[0]=="s" :
+        
+        try:
+            db = pymysql.connect(host='192.168.43.166', port=3307, user='root', passwd='', db='web_db', charset='utf8',
+                            autocommit=1)
+            cursor = db.cursor()
+            print(s)
+            cursor.execute(s)
+            cursor.close()
+            db.commit()
+            return cursor.fetchall()
     
-
-    try:
-        cursor = db.cursor()
-        print(s)
-        cursor.execute(s)
-    except:
-        db = pymysql.connect(
-            host='192.168.43.68',
-            port=3306,
-            user='root',
-            passwd='',
-            db='web_db',
-            charset='utf8' )
-        cursor = db.cursor()
-        print(s)
-        cursor.execute(s)
+        except:
+            pass
+    else:
+        try:
+            db = pymysql.connect(host='192.168.43.68', port=3306, user='root', passwd='', db='web_db', charset='utf8',
+                                 autocommit=1)
+            cursor = db.cursor()
+            print(s)
+            cursor.execute(s)
+            cursor.close()
+            db.commit()
+            return cursor.fetchall()
     
-    cursor.close()
-    db.commit()
-    return cursor.fetchall()
+        except:
+            pass
+        
+    
+    
 def cal_sub(s):
     print(s[0:-1])
     
-    cursor = db.cursor()
+    cursor = db1.cursor()
     cursor.execute(f"select sum(price*num) from orders,goods where goods.goods_id = orders.goods_id and orders.order_id in ({s[0:-1]})")
     cursor.close()
     return cursor.fetchall()[0][0]
@@ -83,7 +89,7 @@ class User:
     def test_password(self):
        
         try:
-            cursor = db.cursor()
+            cursor = db1.cursor()
             cursor.execute(f"select password,user_id from user where username ='{self.username}'")
             data = cursor.fetchall()
             cursor.close()
@@ -108,7 +114,7 @@ class User:
 
     def create_order(self, goods_id):
         try:  # test pswd
-            cursor = db.cursor()
+            cursor = db1.cursor()
             cursor.execute(f"select user_id from user where username ='{self.username}' ")
             data1 = cursor.fetchall()
           
@@ -141,8 +147,10 @@ class Goods:
         try:
             cursor = db.cursor()
             cursor.execute(f"insert into goods values (NULL,'{self.goods_name}',{self.goods_nums},{self.price},'{self.type}','{ self.photo}')")
-            cursor.execute(f"select goods_id from goods where goods_name = '{self.goods_name}'")
             db.commit()
+            
+            cursor.execute(f"select goods_id from goods where goods_name = '{self.goods_name}'")
+            
             data=cursor.fetchall()
             cursor.close()
             return data[0][0]
@@ -168,10 +176,10 @@ class Order:
         self.order_id=order_id
         self.user_id=user_id
     def update(self):
-        cursor = db.cursor()
+        cursor = db1.cursor()
         cursor.execute(f"select * from orders where user_id = {self.user_id} and goods_id = {self.goods_id}")
         data = cursor.fetchall()
-        print(789)
+        cursor = db.cursor()
         if len(data) == 0:
             
             cursor.execute(f"insert into orders (user_id,goods_id) values ('{self.user_id}','{self.goods_id}')")

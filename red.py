@@ -15,6 +15,8 @@ from urllib.request import urlopen
 from base64 import decodebytes, encodebytes
 import time
 import json
+import sys
+sys.path.insert(0,"E:/python_project/untitled/")
 
 
 class AliPay(object):
@@ -31,7 +33,7 @@ class AliPay(object):
         self.return_url = return_url
         with open(self.app_private_key_path) as fp:
             self.app_private_key = RSA.importKey(fp.read())
-        
+        print(type(self.app_private_key))
         self.alipay_public_key_path = alipay_public_key_path
         with open(self.alipay_public_key_path) as fp:
             self.alipay_public_key = RSA.import_key(fp.read())
@@ -128,10 +130,10 @@ def buy(price,id):
     alipay = AliPay(
         appid="2016101100658978",  # 设置签约的appid
         app_notify_url="http://yangyangzijun.51vip.biz:21154/js_test",  # 异步支付通知url
-        app_private_key_path=u"应用私钥2048.txt",  # 设置应用私钥
-        alipay_public_key_path="新建文本文档.txt",  # 支付宝的公钥，验证支付宝回传消息使用，不是你自己的公钥,
+        app_private_key_path=u"E:\python_project/untitled/xi2048.txt",  # 设置应用私钥
+        alipay_public_key_path=u"E:\python_project/untitled/xinjian.txt",  # 支付宝的公钥，验证支付宝回传消息使用，不是你自己的公钥,
         debug=True,  # 默认False,                                   # 设置是否是沙箱环境，True是沙箱环境
-        return_url="http://127.0.0.1:5000/"  # 同步支付通知url
+        return_url="http://192.168.43.68/checked_orders"  # 同步支付通知url
     )
     
     # 传递参数执行支付类里的direct_pay方法，返回签名后的支付参数，
@@ -169,8 +171,8 @@ def check(d):
     alipay = AliPay(
         appid="2016101100658978",  # 设置签约的appid
         app_notify_url="http://yangyangzijun.51vip.biz:21154/js_test",  # 异步支付通知url
-        app_private_key_path=u"应用私钥2048.txt",  # 设置应用私钥
-        alipay_public_key_path="新建文本文档.txt",  # 支付宝的公钥，验证支付宝回传消息使用，不是你自己的公钥,
+        app_private_key_path=u"E:\python_project/untitled/xi2048.txt",  # 设置应用私钥
+        alipay_public_key_path=u"E:\python_project/untitled/xinjian.txt",  # 支付宝的公钥，验证支付宝回传消息使用，不是你自己的公钥,
         debug=True,  # 默认False,                                   # 设置是否是沙箱环境，True是沙箱环境
         return_url="http://127.0.0.1:5000/"  # 同步支付通知url
     )

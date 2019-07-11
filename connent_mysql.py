@@ -1,6 +1,6 @@
 import pymysql
-from flask import session
-from  user import *
+
+
 db = pymysql.connect(
     host='192.168.43.68',
     port=3306,
@@ -12,12 +12,6 @@ db = pymysql.connect(
 
 
 
-
-li=[]
-li.append(154)
-li.append(153)
-s=""
-for l in li:
-    s +=str(l)+','
-print(s[:-1])
-cal_sub(s)
+cursor = db.cursor()
+cursor.execute("select * from goods ")
+print(cursor.fetchall())

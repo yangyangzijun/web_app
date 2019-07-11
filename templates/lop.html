@@ -4,6 +4,10 @@
     <head>
         <title> 购物车 </title>
         <meta charset="utf-8"/>
+        <meta http-equiv="content-type" content="text/html;charset=utf-8">
+		<meta content="always" name="referrer">
+        <meta name="theme-color" content="#2932e1">
+        <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon" />
 
         <style type="text/css">
 
@@ -769,6 +773,7 @@ nav {
 
         </style>
     </head>
+
 <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
 
 <!DOCTYPE html>
@@ -793,26 +798,26 @@ nav {
 <!-- 	<link rel="stylesheet" type="text/css" href="static/css/footer.css"> -->
 
 
-	<title>想喝大可乐</title>
+	<title>并夕夕商城-购物车</title>
     	<nav class="nav">
 			<div class="nav_black">
 					<ul class="nav_black_left">
-						<li><a href="https://www.coca-cola.com.cn/" target="_blank">大可乐</a></li>
+						<li><a href="/" target="_blank">并夕夕商城</a></li>
 						<li>|</li>
-						<li><a href="">可乐</a></li>
-						<li>|</li>
-						<li><a href="">雪碧</a></li>
-						<li>|</li>
-						<li><a href="">脉动</a></li>
-						<li>|</li>
-						<li><a href="">尖叫</a></li>
-						<li>|</li>
-						<li><a href="">农夫山泉</a></li>
-						<li>|</li>
-						<li><a href="">陈泓钇</a></li>
-						<li>|</li>
-						<li><a href="">硫酸</a></li>
-						<li>|</li>
+{#						<li><a href="">可乐</a></li>#}
+{#						<li>|</li>#}
+{#						<li><a href="">雪碧</a></li>#}
+{#						<li>|</li>#}
+{#						<li><a href="">脉动</a></li>#}
+{#						<li>|</li>#}
+{#						<li><a href="">尖叫</a></li>#}
+{#						<li>|</li>#}
+{#						<li><a href="">农夫山泉</a></li>#}
+{#						<li>|</li>#}
+{#						<li><a href="">陈泓钇</a></li>#}
+{#						<li>|</li>#}
+{#						<li><a href="">硫酸</a></li>#}
+{#						<li>|</li>#}
 						<li><a href="">问题反馈</a></li>
 						<li>|</li>
 						<li><a href="">Select Region</a></li>
@@ -822,8 +827,8 @@ nav {
 				<div class="nav_black_right">
 					<div class="fr" id="user_mess">
 						<ul>
-                            	<li><a href="/cal_sub" style="color: red"   id="shopping_num">\__/***购物车（0）</a></li>
-							<li><a href="">消息通知</a></li>
+                            	<li><a href="/cal_sub" style="color: red"   id="shopping_num">\__/***购物车</a></li>
+							<li><a href="/checked_orders">订单中心</a></li>
 							<li>|</li>
 							<li><a  href="/regrist" role="button">注册</a></li>
 							<li>|</li>
@@ -841,9 +846,9 @@ nav {
 
 
 
-	<div id="gouwuchebox">
-		<p>这里什么都没有~</p>
-	</div>
+{#	<div id="gouwuchebox">#}
+{#		<p>这里什么都没有~</p>#}
+{#	</div>#}
 	<!-- navigation -->
 <!--标题栏  -->
 <!--标题栏结束-->
@@ -953,7 +958,7 @@ success: function (data) {
 if (data.mess == 'ok') {
 	var m = '<ul>'+
              '<li><a href="/cal_sub" style="color: red"  id="shopping_num">\\__/***购物车（0）</a></li>'+
-	'<li><a href="">消息通知</a></li>'+
+	'<li><a href="/checked_orders">订单中心</a></li>'+
 	'<li>|</li>'+
 	'<li>'+'<a href="/logout">注销</a>'+'</l' +
         '' +
@@ -1089,8 +1094,6 @@ alert($(this).html())
 
             if(po>1)
             {
-
-
                 var submit_data = {};
                 submit_data['order_id']=$(this).parent().parent().attr("id").toString();
             submit_data['op'] = 'minus';
@@ -1141,14 +1144,11 @@ alert($(this).html())
 
 
             {
-
-
                 var submit_data = {};
                 submit_data['order_id']=$(this).parent().parent().attr("id").toString();
             submit_data['op'] = 'plus';
 
             $.ajax({
-
                     url:"/shoopping_cart",
                     type:"post",
                     contentType: "application/json; charset=utf-8",
@@ -1178,11 +1178,6 @@ alert($(this).html())
                     }
                 });
             }
-
-
-
-
-
         });
     </script>
 <script>
@@ -1190,14 +1185,9 @@ alert($(this).html())
             url: "/test",
             type: "post",
             contentType: "application/json; charset=utf-8",
-
             dataType: "json",
             success: function (data) { //后端返回的json数据（此处data为json对象）
               if (data.mess=='ok') {
-
-
-
-
                   for (var i = 0; i < data.data.length; i++) {
 
                       var xiaoji = parseInt(data.data[i].goods_price)*parseInt(data.data[i].order_num) ;
