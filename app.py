@@ -1,4 +1,5 @@
 from werkzeug.utils import secure_filename
+from flask_session import *
 from flask import Flask, session,render_template, jsonify, request,redirect,escape,url_for
 import os
 from user import *
@@ -23,23 +24,32 @@ PUBLIC_PEM = rsa.publickey().exportKey()
 with open('master-public.pem', 'wb') as f:
     f.write(PUBLIC_PEM)
 f.close()
+# re.set("RANDOM_GENERATOR",RANDOM_GENERATOR)
+re.set("PRIVATE_PEM",PRIVATE_PEM)
+re.set("PUBLIC_PEM",PUBLIC_PEM)
 
 
 
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'secret_key'
+app.config['SESSION_TYPE'] = 'redis'
+app.config['SESSION_REDIS'] = redis.Redis(host='192.168.43.68', port=6379)
+app.config['SESSION_KEY_PREFIX'] = 'flask'
+Session(app)
 UPLOAD_FOLDER = 'static'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 basedir = os.path.abspath(os.path.dirname(__file__))
 ALLOWED_EXTENSIONS = set(['txt', 'png', 'jpg', 'xls', 'JPG', 'PNG', 'xlsx', 'gif', 'GIF'])
 @app.route('/get_key',methods=['get'])
 def get_key():
+   
+   
     data={}
-    with open('master-public.pem') as f:
-        key1 = f.read()
+    key1 = re.get("PUBLIC_PEM").decode('utf-8')
     data['publicKey']=key1
     data['mess'] = "ok"
-    f.close()
+    
     return  jsonify(data)
 
 @app.route('/get_shop_num', methods=['GET', 'POST'])
@@ -83,7 +93,7 @@ def evaluate():
         if 'username' in session:
             request_data = json.loads(request.data.decode('utf-8'))
             try:
-                op_sql(f"update checked_orders set evalute='{request_data['content']}',star_class ='{request_data['xingji']}',received = 2 where order_id= '{request_data['order_id']}'")
+                op_sql_1(f"update checked_orders set evalute='{request_data['content']}',star_class ='{request_data['xingji']}',received = 2 where order_id= '{request_data['order_id']}'")
             except:
                 print("添加出错")
             return jsonify({'mess': 'ok'})
@@ -99,7 +109,7 @@ def checked_orders():
         data = data['order_id']
         s = f"update  checked_orders set received =1 where order_id  = {data} "
         try :
-            op_sql(s)
+            op_sql_1(s)
             return  jsonify({"mess":"ok"})
         except:
             return  jsonify({"mess":"error"})
@@ -119,6 +129,7 @@ def pay():
                      f"orders.goods_id=goods.goods_id  and user.user_id='{a }'")
         li = []
         for l in data:
+            
             res = {'orders_id': l[0], 'main_pic_addr': 'static/' + l[1], 'goods_name': l[2], 'goods_price': l[3],
                    'order_num': l[4],'received':l[5]}
             li.append(res)
@@ -209,12 +220,9 @@ def test():
         return render_template('admin.html')
     else:
         if 'username' in session:
-            cursor = db.cursor()
-            cursor.execute(
-                f"select orders.order_id,goods.main_pic_addr,goods.goods_name,goods.price,orders.num from orders,user,goods where"
+            
+            data = op_sql(f"select orders.order_id,goods.main_pic_addr,goods.goods_name,goods.price,orders.num from orders,user,goods where"
                 f" user.user_id=orders.user_id and orders.goods_id=goods.goods_id  and user.username='{session['username']}'")
-            cursor.close()
-            data = cursor.fetchall()
             li = []
             for l in data:
                 res = {'orders_id': l[0], 'main_pic_addr': 'static/' + l[1], 'goods_name': l[2], 'goods_price': l[3],
@@ -367,12 +375,12 @@ def login():
     if request.method=="GET":
         return  render_template('login (2).html')
     elif request.method=="POST":
+        print(type(RANDOM_GENERATOR))
         try:
             request_data = json.loads(request.data.decode('utf-8'))
             username = request_data['username']
             passwd = request_data['passwd']
-            with open('master-private.pem') as f:
-                key = f.read()
+            key = re.get("PRIVATE_PEM")
             rsakey = RSA.importKey(key)
             cipher = Cipher_pkcs1_v1_5.new(rsakey)
             password = cipher.decrypt(base64.b64decode(passwd), RANDOM_GENERATOR).decode()
@@ -396,7 +404,7 @@ def logout():
     # remove the username from the session if it's there
     session.pop('username', None)
     session.pop("user_id",None)
-    return redirect(url_for('index'))
+    return render_template('home.html')
 @app.route('/regist',methods=['POST',"GET"])
 def regist():
     # remove the username from the session if it's there
@@ -452,9 +460,9 @@ def js_test():
    
     try :
         a=f'insert into checked_orders  (user_id,goods_id,num)  (select user_id,goods_id,num from orders where order_id in ({ s } ))'
-        op_sql(  a)
+        op_sql_1( a)
         b=f'delete from orders where order_id in ({ s }) '
-        op_sql(b)
+        op_sql_1(b)
         print('ok')
     except:
         print('error')
@@ -464,7 +472,7 @@ def js_test():
 
     return "success"
 if __name__ == '__main__':
-    app.run(host='0.0.0.0',port=5000,debug=True)
+    app.run(host='0.0.0.0',port=5000,debug=True,threaded=True)
 
 
 

@@ -163,7 +163,7 @@
 
         //如果不理解我写的，可以看看我的前几篇文章
         $.ajax({
-            url: "/add_goods",
+            url: "http://139.155.133.92/add_goods",
             type: "post",
             dataType: "json",
             cache: false,
@@ -256,34 +256,7 @@
         }
     }
 
-    function fileUpload(){
 
-        var param = new FormData();
-        for(var i=0; i<imgArr.length;i++){
-            param.append(i, imgArr[i]);
-
-        }
-        alert(imgArr.length)
-
-        //$("body").mLoading("show");
-        $.ajax({
-             url: "/add_goods",
-            type: "post",
-            dataType: "json",
-            cache: false,
-            data:param,
-            processData: false,// 不处理数据
-            contentType: false,
-            success:function(data){
-                $("body").mLoading("hide");
-
-            },
-            error:function(){
-                $("body").mLoading("hide");
-                alert(res.description || res.message || "上传失败");
-            }
-        });
-	}
 	init();
 </script>
     	<style>

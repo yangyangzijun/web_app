@@ -1,15 +1,18 @@
-<script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+
 
 <!DOCTYPE html>
 <html>
+
 <head>
 	<meta charset="UTF-8">
-	<script src="static/js/jquery-1.11.3.js" type="text/javascript" charset="utf-8"></script>
-	<script src="static/js/index_jquey.js" type="text/javascript" charset="utf-8"></script>
-	<script src="static/js/mian.js" type="text/javascript" charset="utf-8"></script>
-	<script type="text/javascript" src="static/js/indexData.js"></script>
-	<script type="text/javascript" src="static/js/jquery.js"></script>
-	<script type="text/javascript" src="static/js/index.js"></script>
+    <script src="http://www.yangyangzijun.top/static/js/jquery.js"></script>
+
+{#	<script src="static/js/index_jquey.js" type="text/javascript" charset="utf-8"></script>#}
+
+{#	<script type="text/javascript" src="static/js/indexData.js"></script>#}
+{#	<script src="https://libs.baidu.com/jquery/2.1.1/jquery.min.js"></script>#}
+
+{#	<script type="text/javascrip" src="static/js/index.js"></script>#}
 
 	<link rel="stylesheet" type="text/css" href="static/css/main.css">
 	<link rel="stylesheet" type="text/css" href="static/css/reset.css">
@@ -30,7 +33,7 @@
     	<nav class="nav">
 			<div class="nav_black">
 					<ul class="nav_black_left">
-						<li><a href="/" target="_blank">并夕夕商城</a></li>
+						<li><a href="/" >并夕夕商城</a></li>
 						<li>|</li>
 {#						<li><a href="">可乐</a></li>#}
 {#						<li>|</li>#}
@@ -82,7 +85,7 @@
 			<div id="navBottomC" class="c">
 				<section id="navBottomLeft">
 
-						<img id="indexLogo" src="static/logo.png" alt="" style="width: 132px;height: 50px;">
+						<img id="indexLogo" src="http://www.yangyangzijun.top/static/logo.png" alt="" style="width: 132px;height: 50px;">
 					</a>
 					<ul id="navBottomLinkBox">
 						<li id="phoneSelft" class="navBottomLinks">
@@ -105,15 +108,15 @@
 <div class="phoneMenu phoneMenuCompt">
 								<ul class="phoneMenuBox">
 									<li class="phoneLinks"><a href="goodsDetails.html">
-										<img src="img/index/smallpart01.png" alt="">
+										<img src="http://www.yangyangzijun.top/img/index/smallpart01.png" alt="">
 										<span>保护壳</span>
 									</a></li>
 									<li class="phoneLinks"><a href="">
-										<img src="img/index/smallpart02.png" alt="">
+										<img src="http://www.yangyangzijun.top/img/index/smallpart02.png" alt="">
 										<span>电视盒子</span>
 									</a></li>
 									<li class="phoneLinks"><a href="">
-										<img src="img/index/smallpart03.png" alt="">
+										<img src="http://www.yangyangzijun.top/img/index/smallpart03.png" alt="">
 										<span>照明</span>
 									</a></li>
 								</ul>
@@ -229,20 +232,20 @@ $.ajax({
 					'<div class ="phoneOne" >'+
 						'<div id = "xinpin">新品</div>'+
 						'<a class = "PhoneLittlePhone" href="get_details?goods_id='+data.data[i].goods_id+'">'+
-							'<img src="'+ data.data[i].goods_photo +'" alt="">'+ data.data[i].goods_name+
+							'<img src="http://www.yangyangzijun.top/'+ data.data[i].goods_photo +'" alt="">'+ data.data[i].goods_name+
 						'</a>'+
 						'<p class="miaosu">'+ data.data[i].goods_type+'</p>'+
 						'<br>'+
 						'<p class ="price">'+ data.data[i].goods_price+'</p>'+
 					'</div>'+
 				'</li>'
-                         document.getElementById("list_goods_phone").innerHTML += p;
+
                       if(data.data[i].goods_type == "手机")
 
                         {
                               document.getElementById("list_goods_phone").innerHTML += p;
                         }
-                        else if(data.data[i].goods_type == "笔记本")
+                        else if(data.data[i].goods_type == "电脑" ||  data.data[i].goods_type == "笔记本")
                         {
                             document.getElementById("list_goods_computer").innerHTML += p;
 

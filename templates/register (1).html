@@ -175,12 +175,12 @@ $(function() {
 			$.each(formArray, function (i, item) {
 				formObject[item.name] = item.value;
 			});
-			alert("sadsaf");
+
             var encrypt = new JSEncrypt();
             publicKey = '"'+publicKey+'"';
             encrypt.setPublicKey(publicKey);
             formObject['passwd']  = encrypt.encrypt(formObject['passwd'] );//加密后的字符串
-            alert("sadasdsaf")
+            
 			$.ajax({
 				url: "/regist",
 				type: "post",

@@ -1,11 +1,10 @@
-var items = document.getElementsByClassName("item");
-var points = document.getElementsByClassName("point");
+
 var goPreBtn = document.getElementById("goPre");
 var goNextBtn = document.getElementById('goNext');
 var time = 30;
 var	index = 0; 
 var leftul1 = document.getElementById('leftUl');
-var ull = document.querySelector('#shoujidianhua');
+
 
 
 
